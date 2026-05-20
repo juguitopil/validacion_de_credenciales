@@ -1,0 +1,1 @@
+<?php echo nl2br(htmlspecialchars(file_get_contents('/tmp/uagrm_debug_body.txt'))); ?>
