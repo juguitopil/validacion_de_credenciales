@@ -1,4 +1,6 @@
-// ── Toggle password visibility ──
+const RAILWAY_URL = 'https://unultimointentoporvaleri-production.up.railway.app';
+
+// Toggle password
 const togglePass = document.getElementById('togglePass');
 const passInput  = document.getElementById('password');
 const eyeIcon    = document.getElementById('eyeIcon');
@@ -13,7 +15,7 @@ togglePass.addEventListener('click', () => {
     : `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
 });
 
-// ── Form submission ──
+// Form
 const form      = document.getElementById('registroForm');
 const submitBtn = document.getElementById('submitBtn');
 const btnText   = submitBtn.querySelector('.btn-text');
@@ -24,58 +26,87 @@ form.addEventListener('submit', async (e) => {
   e.preventDefault();
 
   const registro = document.getElementById('registro').value.trim();
-  const password = document.getElementById('password').value;
-  const nombre   = document.getElementById('nombre').value.trim();
-  const cargo    = document.getElementById('cargo').value.trim();
+  const password = document.getElementById('password').value.trim();
 
-  // Basic validation
-  if (!registro || !password || !nombre || !cargo) {
+  if (!registro || !password) {
     showResultado('Por favor completa todos los campos.', 'error');
     return;
   }
 
-  // Show loader
   setLoading(true);
   resultado.hidden = true;
+  setEstado('Verificando credenciales en el portal UAGRM...');
 
   try {
-    const res = await fetch('api/registrar.php', {
+    // PASO 1: Verificar via Railway
+    const resp = await fetch(RAILWAY_URL + '/api/verificar', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ registro, password, nombre, cargo })
+      body: JSON.stringify({ username: registro, password })
     });
 
-    const data = await res.json();
+    const data = await resp.json();
 
-    if (data.success) {
-      showResultado(
-        `✅ Credenciales verificadas correctamente. El trabajador <strong>${nombre}</strong> fue registrado en el sistema.`,
-        'success'
-      );
-      form.reset();
-    } else {
-      showResultado(
-        `❌ ${data.message || 'Las credenciales institucionales son incorrectas. Por favor verifica e intenta de nuevo.'}`,
-        'error'
-      );
+    if (!data.valid) {
+      showResultado('Credenciales institucionales incorrectas. Verifica tu Registro y contrasena del portal UAGRM.', 'error');
+      setLoading(false);
+      setEstado('');
+      return;
     }
 
+    // PASO 2: Guardar en BD
+    setEstado('Credenciales verificadas. Guardando registro...');
+    await fetch('api/registrar.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        registro:   data.codigo  || registro,
+        nombre:     data.nombre  || '',
+        cargo:      data.carrera || 'ESTUDIANTE',
+        verificado: true
+      })
+    });
+
+    // PASO 3: Guardar datos del carnet en sessionStorage y redirigir
+    setEstado('Cargando carnet...');
+    sessionStorage.setItem('carnet_data', JSON.stringify({
+      registro:    data.codigo      || registro,
+      nombre:      data.nombre      || '',
+      carrera:     data.carrera     || '',
+      facultad:    data.facultad    || '',
+      ci:          data.ci          || '',
+      telefonos:   data.telefonos   || '',
+      foto_base64: data.foto_base64 || '',
+    }));
+
+    showResultado('Bienvenido <strong>' + (data.nombre || registro) + '</strong>. Cargando carnet...', 'success');
+
+    setTimeout(() => {
+      window.location.href = 'carnet.html';
+    }, 1000);
+
   } catch (err) {
-    showResultado('❌ Error de conexión con el servidor. Por favor intenta más tarde.', 'error');
-  } finally {
+    showResultado('Error de conexion. Por favor intenta mas tarde.', 'error');
+    console.error(err);
     setLoading(false);
+    setEstado('');
   }
 });
 
 function setLoading(loading) {
   submitBtn.disabled = loading;
-  btnText.hidden  = loading;
-  btnLoader.hidden = !loading;
+  btnText.hidden     = loading;
+  btnLoader.hidden   = !loading;
 }
 
 function showResultado(html, type) {
-  resultado.innerHTML = html;
-  resultado.className = `resultado ${type}`;
-  resultado.hidden = false;
+  resultado.innerHTML  = html;
+  resultado.className  = 'resultado ' + type;
+  resultado.hidden     = false;
   resultado.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function setEstado(msg) {
+  const el = document.getElementById('estadoMsg');
+  if (el) el.textContent = msg;
 }

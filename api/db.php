@@ -5,7 +5,7 @@
 // ============================================================
 
 define('DB_HOST', 'sql100.infinityfree.com');   // Ej: sql212.infinityfree.com
-define('DB_USER', 'tif0_41710876');   // Ej: if0_12345678
+define('DB_USER', 'if0_41710876');   // Ej: if0_12345678
 define('DB_PASS', '6harBakzZ8a4');
 define('DB_NAME', 'if0_41710876_fire'); // Ej: if0_12345678_carnetizacion
 

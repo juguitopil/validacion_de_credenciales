@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Test Railway + UAGRM</title>
+<style>
+  body { font-family: monospace; background: #1a1a2e; color: #e0e0e0; padding: 20px; }
+  h2 { color: #7dd3fc; }
+  input { padding: 8px; width: 250px; margin: 5px 0; background: #0f3460; border: 1px solid #7dd3fc; color: white; border-radius: 4px; }
+  button { padding: 10px 20px; background: #1e90ff; color: white; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px; }
+  #resultado { margin-top: 20px; padding: 15px; border-radius: 6px; background: #0f3460; white-space: pre-wrap; min-height: 60px; }
+  .ok { border-left: 4px solid #4ade80; }
+  .error { border-left: 4px solid #f87171; }
+  .warning { color: #facc15; }
+  label { display: block; margin-top: 10px; color: #94a3b8; font-size: 13px; }
+</style>
+</head>
+<body>
+<h2>Test de conexion: Browser -> Railway -> UAGRM</h2>
+<p style="color:#94a3b8">Esta prueba corre desde tu navegador, NO desde InfinityFree PHP.<br>
+Si funciona, el sistema completo funcionara.</p>
+
+<label>Registro universitario:</label>
+<input type="text" id="registro" placeholder="Ej: 225111152">
+
+<label>Contrasena del portal UAGRM:</label>
+<input type="password" id="password" placeholder="Tu contrasena real">
+
+<br>
+<button onclick="probar()">Ejecutar prueba</button>
+<button onclick="probarHealth()" style="background:#6366f1;margin-left:10px">Solo verificar Railway</button>
+
+<div id="resultado">Esperando prueba...</div>
+
+<script>
+const RAILWAY_URL = 'https://unultimointentoporvaleri-production.up.railway.app';
+
+async function probarHealth() {
+  const div = document.getElementById('resultado');
+  div.className = '';
+  div.textContent = 'Conectando a Railway...';
+  try {
+    const r = await fetch(RAILWAY_URL + '/');
+    const d = await r.json();
+    div.className = 'ok';
+    div.textContent = 'Railway OK: ' + JSON.stringify(d, null, 2);
+  } catch(e) {
+    div.className = 'error';
+    div.textContent = 'Error: ' + e.message;
+  }
+}
+
+async function probar() {
+  const registro = document.getElementById('registro').value.trim();
+  const password = document.getElementById('password').value.trim();
+  const div = document.getElementById('resultado');
+
+  if (!registro || !password) {
+    div.textContent = 'Ingresa registro y contrasena.';
+    return;
+  }
+
+  div.className = '';
+  div.textContent = 'Enviando a Railway... (puede tardar 15-20 segundos, Chrome esta abriendo el portal UAGRM)';
+
+  const inicio = Date.now();
+  try {
+    const resp = await fetch(RAILWAY_URL + '/api/verificar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: registro, password: password })
+    });
+
+    const data = await resp.json();
+    const tiempo = ((Date.now() - inicio) / 1000).toFixed(1);
+
+    if (data.valid) {
+      div.className = 'ok';
+      div.textContent = 'CREDENCIALES VALIDAS\nTiempo: ' + tiempo + 's\n\n' + JSON.stringify(data, null, 2);
+    } else {
+      div.className = 'error';
+      div.textContent = 'CREDENCIALES INVALIDAS\nTiempo: ' + tiempo + 's\n\n' + JSON.stringify(data, null, 2);
+    }
+  } catch(e) {
+    div.className = 'error';
+    div.textContent = 'Error de conexion: ' + e.message + '\n\nVerifica que Railway este activo.';
+  }
+}
+</script>
+</body>
+</html>

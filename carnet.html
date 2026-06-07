@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Carnet Universitario UAGRM</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#003366;--red:#c0132b;--gold:#FFD700;
+  --white:#fff;--gray:#f0f2f7;
+}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:linear-gradient(135deg,#001a33 0%,#003366 50%,#001a33 100%);
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;padding:24px;
+}
+
+/* ── HEADER ── */
+.header{
+  display:flex;align-items:center;gap:14px;margin-bottom:32px;
+}
+.header img{height:48px;filter:brightness(0) invert(1);}
+.header-text h1{
+  font-family:'Bebas Neue',sans-serif;font-size:22px;
+  color:#fff;letter-spacing:2px;
+}
+.header-text p{font-size:12px;color:rgba(255,255,255,.6);letter-spacing:.5px;}
+
+/* ── CARD FLIP CONTAINER ── */
+.scene{
+  width:380px;height:240px;perspective:1000px;cursor:pointer;
+  margin-bottom:20px;
+}
+.card-flip{
+  width:100%;height:100%;position:relative;
+  transform-style:preserve-3d;transition:transform .7s cubic-bezier(.4,0,.2,1);
+}
+.scene:hover .card-flip,
+.scene.flipped .card-flip{transform:rotateY(180deg);}
+
+.face{
+  position:absolute;inset:0;border-radius:16px;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+.face-front{background:#fff;}
+.face-back{background:var(--navy);transform:rotateY(180deg);}
+
+/* ── FRONT FACE ── */
+.front-header{
+  background:var(--red);padding:8px 14px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.front-header .title{
+  font-family:'Bebas Neue',sans-serif;font-size:11px;
+  color:#fff;letter-spacing:1.5px;
+}
+.front-header .logo-small{height:22px;filter:brightness(0) invert(1);}
+
+.front-body{display:flex;height:calc(100% - 38px);}
+
+/* Franja izquierda azul */
+.front-left{
+  background:var(--navy);width:42%;
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:8px;padding:12px 8px;position:relative;
+}
+.front-left::after{
+  content:'';position:absolute;right:0;top:0;bottom:0;
+  width:6px;background:linear-gradient(180deg,var(--red) 0%,var(--red) 40%,var(--gold) 40%,var(--gold) 60%,var(--navy) 60%);
+}
+.carnet-title{
+  font-family:'Bebas Neue',sans-serif;color:#fff;
+  font-size:20px;letter-spacing:2px;text-align:center;line-height:1.1;
+}
+.carnet-title span{color:var(--gold);display:block;}
+.photo-box{
+  width:72px;height:90px;border-radius:4px;overflow:hidden;
+  border:2px solid var(--gold);background:#ccc;
+}
+.photo-box img{width:100%;height:100%;object-fit:cover;}
+
+/* Franja derecha datos */
+.front-right{
+  flex:1;padding:12px 14px;
+  display:flex;flex-direction:column;justify-content:space-between;
+  background:linear-gradient(135deg,#fff 70%,#f8f0f0 100%);
+}
+.inst-name{
+  font-size:7.5px;font-weight:700;color:var(--red);
+  text-transform:uppercase;letter-spacing:.8px;
+  border-bottom:1px solid #eee;padding-bottom:4px;
+}
+.student-name{
+  font-size:13px;font-weight:700;color:var(--navy);
+  line-height:1.2;margin:4px 0;
+}
+.data-row{
+  display:flex;flex-direction:column;gap:2px;
+}
+.data-item{display:flex;flex-direction:column;}
+.data-label{font-size:7px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:.5px;}
+.data-value{font-size:9.5px;font-weight:600;color:var(--navy);}
+
+.carrera-box{
+  background:var(--navy);border-radius:4px;padding:4px 8px;
+  margin-top:4px;
+}
+.carrera-text{font-size:8px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.5px;}
+
+.logo-bottom{
+  display:flex;align-items:center;justify-content:flex-end;gap:6px;
+  margin-top:4px;
+}
+.logo-bottom .uagrm-text{
+  font-family:'Bebas Neue',sans-serif;font-size:22px;
+  color:var(--navy);letter-spacing:1px;line-height:1;
+}
+.logo-bottom img{height:28px;}
+
+/* Diagonal roja decorativa */
+.diag{
+  position:absolute;bottom:0;right:0;
+  width:80px;height:80px;overflow:hidden;pointer-events:none;
+}
+.diag::before{
+  content:'';position:absolute;
+  bottom:-20px;right:-20px;
+  width:80px;height:80px;
+  background:var(--red);
+  transform:rotate(45deg);
+  opacity:.12;
+}
+
+/* ── BACK FACE ── */
+.back-strip{
+  background:var(--red);height:36px;margin-top:28px;
+}
+.back-content{padding:16px 20px;}
+.back-logo{
+  display:flex;align-items:center;gap:10px;margin-bottom:12px;
+}
+.back-logo .ua-text{
+  font-family:'Bebas Neue',sans-serif;color:#fff;font-size:32px;line-height:1;
+}
+.back-logo .logo-img{height:36px;filter:brightness(0) invert(1);}
+.back-logo .inst-full{
+  font-size:9px;color:rgba(255,255,255,.7);
+  text-transform:uppercase;letter-spacing:.5px;line-height:1.4;
+}
+.back-qr{
+  position:absolute;right:16px;top:50%;transform:translateY(-50%);
+  background:#fff;padding:6px;border-radius:4px;
+}
+.back-qr svg{width:60px;height:60px;}
+.back-dates{
+  display:flex;gap:16px;margin-top:8px;
+}
+.date-item{display:flex;flex-direction:column;}
+.date-label{font-size:8px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.5px;}
+.date-value{font-size:12px;font-weight:700;color:#fff;}
+.back-note{
+  position:absolute;bottom:12px;left:16px;right:80px;
+  font-size:8px;color:rgba(255,255,255,.5);line-height:1.5;
+}
+.globe-watermark{
+  position:absolute;right:90px;bottom:20px;
+  opacity:.05;font-size:80px;
+}
+
+/* ── HINT ── */
+.hint{color:var(--red);font-size:12px;font-weight:500;letter-spacing:.3px;}
+
+/* ── ACTIONS ── */
+.actions{display:flex;gap:12px;margin-top:16px;}
+.btn{
+  padding:11px 24px;border-radius:8px;font-size:13px;
+  font-weight:600;cursor:pointer;border:none;
+  display:flex;align-items:center;gap:8px;
+  transition:all .2s;font-family:'DM Sans',sans-serif;
+}
+.btn-red{background:var(--red);color:#fff;}
+.btn-red:hover{background:#a01022;transform:translateY(-1px);}
+.btn-blue{background:var(--navy);color:#fff;}
+.btn-blue:hover{background:#002244;transform:translateY(-1px);}
+
+/* ── LOADING STATE ── */
+.loading-wrap{
+  display:flex;flex-direction:column;align-items:center;gap:16px;
+  color:rgba(255,255,255,.8);
+}
+.spinner{
+  width:48px;height:48px;border:3px solid rgba(255,255,255,.2);
+  border-top-color:var(--gold);border-radius:50%;
+  animation:spin 1s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── ERROR STATE ── */
+.error-wrap{
+  background:rgba(192,19,43,.15);border:1px solid rgba(192,19,43,.4);
+  border-radius:12px;padding:24px 32px;text-align:center;color:#ff6b6b;
+  max-width:380px;
+}
+.error-wrap h3{font-size:16px;margin-bottom:8px;}
+.error-wrap p{font-size:13px;opacity:.8;}
+.btn-retry{
+  margin-top:16px;background:var(--red);color:#fff;
+  padding:10px 20px;border-radius:8px;border:none;
+  font-size:13px;font-weight:600;cursor:pointer;
+  font-family:'DM Sans',sans-serif;
+}
+
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <img src="https://www.uagrm.edu.bo/img/logo-88x707-gray.png" alt="UAGRM" onerror="this.style.display='none'"/>
+  <div class="header-text">
+    <h1>UAGRM · Carnetización</h1>
+    <p>SISTEMA DE GESTIÓN DE CREDENCIALES UNIVERSITARIAS</p>
+  </div>
+</div>
+
+<!-- LOADING -->
+<div class="loading-wrap" id="loadingWrap">
+  <div class="spinner"></div>
+  <p id="loadingMsg">Cargando carnet...</p>
+</div>
+
+<!-- ERROR -->
+<div class="error-wrap hidden" id="errorWrap">
+  <h3>No se pudo cargar el carnet</h3>
+  <p id="errorMsg">Error desconocido.</p>
+  <button class="btn-retry" onclick="window.location.href='index.html'">Volver</button>
+</div>
+
+<!-- CARNET -->
+<div class="hidden" id="carnetWrap">
+  <div class="scene" id="scene" onclick="this.classList.toggle('flipped')" title="Clic para girar">
+    <div class="card-flip">
+
+      <!-- FRENTE -->
+      <div class="face face-front">
+        <div class="front-header">
+          <span class="title">Universidad Autónoma Gabriel René Moreno</span>
+          <img class="logo-small" src="https://www.uagrm.edu.bo/img/logo-88x707-gray.png" onerror="this.style.display='none'"/>
+        </div>
+        <div class="front-body">
+          <div class="front-left">
+            <div class="carnet-title">CARNET<span>UNIVER<br>SITARIO</span></div>
+            <div class="photo-box">
+              <img id="fotoCarnet" src="" alt="Foto"/>
+            </div>
+          </div>
+          <div class="front-right">
+            <div class="inst-name">Universidad Autónoma Gabriel René Moreno</div>
+            <div class="student-name" id="nombreCarnet">—</div>
+            <div class="data-row">
+              <div class="data-item">
+                <span class="data-label">Registro</span>
+                <span class="data-value" id="registroCarnet">—</span>
+              </div>
+              <div class="data-item">
+                <span class="data-label">Emisión</span>
+                <span class="data-value" id="emisionCarnet">—</span>
+              </div>
+              <div class="data-item">
+                <span class="data-label">Vencimiento</span>
+                <span class="data-value" id="vencimientoCarnet">—</span>
+              </div>
+            </div>
+            <div class="carrera-box">
+              <div class="carrera-text" id="carreraCarnet">—</div>
+            </div>
+            <div class="logo-bottom">
+              <span class="uagrm-text">UA<br>GRM</span>
+              <img src="https://www.uagrm.edu.bo/img/logo-88x707-gray.png" onerror="this.style.display='none'" style="height:28px;filter:hue-rotate(0deg)"/>
+            </div>
+          </div>
+        </div>
+        <div class="diag"></div>
+      </div>
+
+      <!-- REVERSO -->
+      <div class="face face-back" style="position:relative;">
+        <div class="back-strip"></div>
+        <div class="back-content">
+          <div class="back-logo">
+            <img class="logo-img" src="https://www.uagrm.edu.bo/img/logo-88x707-gray.png" onerror="this.style.display='none'"/>
+            <div>
+              <div class="ua-text">UAGRM</div>
+              <div class="inst-full">Universidad Autónoma<br>Gabriel René Moreno</div>
+            </div>
+          </div>
+          <div class="back-dates">
+            <div class="date-item">
+              <span class="date-label">C.I.</span>
+              <span class="date-value" id="ciCarnet">—</span>
+            </div>
+            <div class="date-item">
+              <span class="date-label">Carrera</span>
+              <span class="date-value" style="font-size:9px" id="carreraBack">—</span>
+            </div>
+            <div class="date-item">
+              <span class="date-label">Facultad</span>
+              <span class="date-value" style="font-size:9px" id="facultadCarnet">—</span>
+            </div>
+          </div>
+        </div>
+        <div class="back-qr" id="qrBox"></div>
+        <div class="back-note">
+          Este carnet es de uso personal e intransferible.<br>
+          En caso de pérdida o robo, reportar inmediatamente.
+        </div>
+        <div class="globe-watermark">🌐</div>
+      </div>
+
+    </div>
+  </div>
+
+  <p class="hint">👆 Toca el carnet para girarlo</p>
+
+  <div class="actions">
+    <button class="btn btn-red" id="btnDescargar">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Descargar PDF
+    </button>
+    <button class="btn btn-blue" id="btnImprimir">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Imprimir
+    </button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+// ── Leer datos del sessionStorage (puestos por index.html tras verificación) ──
+const stored = sessionStorage.getItem('carnet_data');
+
+if (!stored) {
+  showError('Sesión expirada. Por favor vuelve a ingresar.');
+} else {
+  const data = JSON.parse(stored);
+  renderCarnet(data);
+}
+
+function renderCarnet(d) {
+  document.getElementById('loadingWrap').classList.add('hidden');
+  document.getElementById('carnetWrap').classList.remove('hidden');
+
+  // Foto
+  const foto = d.foto_base64 || d.foto || '';
+  const fotoEl = document.getElementById('fotoCarnet');
+  if (foto) {
+    fotoEl.src = foto.startsWith('data:') ? foto : 'data:image/jpeg;base64,' + foto;
+  } else {
+    fotoEl.src = '';
+    fotoEl.style.background = '#aaa';
+  }
+
+  // Datos
+  document.getElementById('nombreCarnet').textContent    = d.nombre || '—';
+  const reg = d.codigo || d.registro || '—';
+  document.getElementById('registroCarnet').textContent  = reg;
+  document.getElementById('carreraCarnet').textContent   = d.carrera || '—';
+  document.getElementById('ciCarnet').textContent        = d.ci || '—';
+  document.getElementById('carreraBack').textContent     = d.carrera || '—';
+  document.getElementById('facultadCarnet').textContent  = d.facultad || '—';
+
+  // Fechas (emisión = hoy, vencimiento = +1 año)
+  const hoy = new Date();
+  const venc = new Date(hoy); venc.setFullYear(venc.getFullYear() + 1);
+  const fmt = dt => dt.toLocaleDateString('es-BO',{day:'2-digit',month:'2-digit',year:'numeric'});
+  document.getElementById('emisionCarnet').textContent   = fmt(hoy);
+  document.getElementById('vencimientoCarnet').textContent = fmt(venc);
+
+  // QR con el registro
+  new QRCode(document.getElementById('qrBox'), {
+    text: d.codigo || d.registro || 'UAGRM',
+    width: 60, height: 60,
+    colorDark: '#003366', colorLight: '#ffffff',
+    correctLevel: QRCode.CorrectLevel.M
+  });
+
+  // Botones
+  document.getElementById('btnDescargar').onclick = () => imprimirCarnet(true);
+  document.getElementById('btnImprimir').onclick  = () => imprimirCarnet(false);
+}
+
+function imprimirCarnet(pdf) {
+  // Mostrar frente para imprimir
+  document.getElementById('scene').classList.remove('flipped');
+  setTimeout(() => window.print(), 300);
+}
+
+function showError(msg) {
+  document.getElementById('loadingWrap').classList.add('hidden');
+  document.getElementById('errorMsg').textContent = msg;
+  document.getElementById('errorWrap').classList.remove('hidden');
+}
+</script>
+
+<style media="print">
+  body{background:#fff!important;padding:0!important;}
+  .header,.hint,.actions{display:none!important;}
+  .scene{box-shadow:none!important;}
+</style>
+
+</body>
+</html>

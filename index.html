@@ -1,396 +1,598 @@
-<!DOCTYPE html>
+23cfb5e7<!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesión - UAGRM</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>UAGRM · Carnetización</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#094173; --navy-dark:#072f52; --navy-light:#e8f0f7;
+  --red:#c0132b; --red-light:#fef0f2;
+  --white:#fff; --gray50:#f8f9fb; --gray100:#f0f2f5;
+  --gray200:#e4e7ec; --gray400:#9aa3b0; --gray600:#4b5563; --gray900:#111827;
+  --sidebar-w:220px; --header-h:64px;
+  --radius:12px; --shadow:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06);
+}
+html,body{height:100%;font-family:'Inter',sans-serif;background:var(--gray50);color:var(--gray900);}
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            min-height: 100vh;
-            background: #fff;
-            display: flex;
-        }
+/* ── LAYOUT ─────────────────────────────────────────── */
+.app{display:flex;min-height:100vh;}
 
-        .left-section {
-            flex: 0 0 60%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 40px;
-            background: #fff;
-            min-width: 400px;
-        }
+/* ── SIDEBAR ─────────────────────────────────────────── */
+.sidebar{
+  width:var(--sidebar-w);flex-shrink:0;
+  background:var(--navy);
+  display:flex;flex-direction:column;
+  position:fixed;top:0;left:0;bottom:0;z-index:100;
+  transition:transform .3s;
+}
+.sidebar-header{
+  padding:20px 16px;border-bottom:1px solid rgba(255,255,255,.1);
+  display:flex;align-items:center;gap:10px;
+}
+.sidebar-header img{height:32px;filter:brightness(0) invert(1);}
+.sidebar-brand{color:#fff;font-size:13px;font-weight:600;line-height:1.3;letter-spacing:.3px;}
+.sidebar-brand span{display:block;color:rgba(255,255,255,.55);font-size:10px;font-weight:400;text-transform:uppercase;letter-spacing:.8px;margin-top:1px;}
 
-        .left-section img {
-            max-width: 350px;
-            height: auto;
-        }
+.user-card{
+  margin:12px;padding:12px;border-radius:10px;
+  background:rgba(255,255,255,.08);
+  display:flex;align-items:center;gap:10px;
+}
+.user-avatar{
+  width:38px;height:38px;border-radius:50%;overflow:hidden;
+  border:2px solid rgba(255,255,255,.3);flex-shrink:0;background:#ccc;
+}
+.user-avatar img{width:100%;height:100%;object-fit:cover;}
+.user-info{min-width:0;}
+.user-welcome{font-size:10px;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.5px;}
+.user-name{font-size:12px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.user-carrera{font-size:10px;color:rgba(255,255,255,.6);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 
-        /* Sección DERECHA (Azul con Formulario) - Ahora ocupa el 40% */
-        .right-section {
-            flex: 0 0 40%;
-            background: #094173;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            min-width: 300px;
-        }
+.nav{padding:8px 0;flex:1;}
+.nav-section{padding:8px 16px 4px;font-size:10px;font-weight:600;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:1px;}
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 16px;margin:1px 8px;border-radius:8px;
+  color:rgba(255,255,255,.7);font-size:13px;font-weight:500;
+  cursor:pointer;transition:all .15s;text-decoration:none;
+  border:none;background:none;width:calc(100% - 16px);text-align:left;
+}
+.nav-item:hover{background:rgba(255,255,255,.1);color:#fff;}
+.nav-item.active{background:rgba(255,255,255,.15);color:#fff;}
+.nav-item svg{width:18px;height:18px;flex-shrink:0;opacity:.8;}
+.nav-item.active svg{opacity:1;}
 
-        /* CARD DE LOGIN - Reducido para caber en el 40% */
-        .login-card {
-            background: white;
-            border-radius: 16px;
-            padding: 30px 25px;
-            width: 100%;
-            max-width: 340px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+.sidebar-footer{
+  padding:12px;border-top:1px solid rgba(255,255,255,.1);
+}
+.btn-logout{
+  display:flex;align-items:center;gap:8px;
+  padding:9px 12px;border-radius:8px;
+  color:rgba(255,255,255,.6);font-size:13px;font-weight:500;
+  cursor:pointer;transition:all .15s;border:none;background:none;width:100%;
+}
+.btn-logout:hover{color:#ff6b6b;background:rgba(255,0,0,.1);}
+.btn-logout svg{width:16px;height:16px;}
 
-        .logo {
-            text-align: center;
-            margin-bottom: 20px;
-            width: 100%;
-        }
+/* ── MAIN ─────────────────────────────────────────── */
+.main{
+  margin-left:var(--sidebar-w);flex:1;
+  display:flex;flex-direction:column;min-height:100vh;
+}
 
-        .logo img {
-            max-width: 160px;
-            height: auto;
-            display: block;
-            margin: 0 auto;
-        }
+/* ── TOPBAR ─────────────────────────────────────────── */
+.topbar{
+  height:var(--header-h);background:var(--white);
+  border-bottom:1px solid var(--gray200);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;position:sticky;top:0;z-index:50;
+}
+.topbar-title h1{font-size:18px;font-weight:600;color:var(--gray900);}
+.topbar-title p{font-size:13px;color:var(--gray400);margin-top:1px;}
+.topbar-avatar{
+  width:36px;height:36px;border-radius:50%;overflow:hidden;
+  border:2px solid var(--gray200);cursor:pointer;background:#ccc;
+}
+.topbar-avatar img{width:100%;height:100%;object-fit:cover;}
+.hamburger{display:none;background:none;border:none;cursor:pointer;padding:4px;}
+.hamburger svg{width:22px;height:22px;stroke:var(--gray600);}
 
-        .logo h1 {
-            font-size: 18px;
-            color: #0d47a1;
-            margin-top: 10px;
-            font-weight: 600;
-            letter-spacing: 1px;
-        }
+/* ── CONTENT ─────────────────────────────────────────── */
+.content{flex:1;padding:28px;}
 
-        h2 {
-            font-size: 24px;
-            color: #333;
-            text-align: center;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
+/* ── VIEWS ─────────────────────────────────────────── */
+.view{display:none;}
+.view.active{display:block;}
 
-        .welcome-text {
-            text-align: center;
-            color: #666;
-            margin-bottom: 25px;
-            font-size: 14px;
-            line-height: 1.4;
-        }
+/* ── INICIO ─────────────────────────────────────────── */
+.cards-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+  max-width:860px;
+}
+.action-card{
+  background:var(--white);border-radius:var(--radius);
+  border:1px solid var(--gray200);padding:24px;
+  display:flex;align-items:center;justify-content:space-between;
+  cursor:pointer;transition:all .2s;text-decoration:none;color:inherit;
+}
+.action-card:hover{border-color:var(--navy);box-shadow:var(--shadow);transform:translateY(-1px);}
+.action-card-left{display:flex;align-items:center;gap:14px;}
+.action-icon{
+  width:44px;height:44px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.action-icon.green{background:#ecfdf5;}
+.action-icon.red{background:#fef2f2;}
+.action-icon.blue{background:#eff6ff;}
+.action-icon svg{width:22px;height:22px;}
+.action-card h3{font-size:14px;font-weight:600;color:var(--gray900);}
+.action-card p{font-size:12px;color:var(--gray400);margin-top:3px;}
+.action-chevron{color:var(--gray400);}
+.action-chevron svg{width:18px;height:18px;}
 
-        .alert {
-            margin-bottom: 15px;
-            padding: 10px;
-            border-radius: 6px;
-            font-size: 13px;
-            width: 100%;
-        }
+/* ── VER CARNET ─────────────────────────────────────────── */
+.carnet-center{display:flex;flex-direction:column;align-items:center;gap:20px;padding:8px 0 32px;}
 
-        .alert-success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
+.scene{width:380px;height:240px;perspective:1200px;cursor:pointer;}
+.card-flip{
+  width:100%;height:100%;position:relative;
+  transform-style:preserve-3d;transition:transform .7s cubic-bezier(.4,0,.2,1);
+}
+.scene.flipped .card-flip{transform:rotateY(180deg);}
+.face{
+  position:absolute;inset:0;border-radius:14px;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.18);
+}
+.face-front{background:#fff;}
+.face-back{background:var(--navy);transform:rotateY(180deg);}
 
-        .alert-error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
+/* Frente */
+.f-header{
+  background:var(--red);padding:7px 12px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.f-header-title{font-size:8px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.8px;}
+.f-header img{height:18px;filter:brightness(0) invert(1);}
+.f-body{display:flex;height:calc(100% - 34px);}
+.f-left{
+  background:var(--navy);width:40%;
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:6px;padding:10px 6px;
+  position:relative;
+}
+.f-left::after{
+  content:'';position:absolute;right:0;top:0;bottom:0;width:5px;
+  background:linear-gradient(180deg,var(--red) 40%,#FFD700 40%,#FFD700 60%,var(--navy) 60%);
+}
+.f-carnet-label{
+  font-size:18px;font-weight:900;color:#fff;text-align:center;line-height:1;letter-spacing:1px;
+}
+.f-carnet-label span{color:#FFD700;display:block;font-size:12px;font-weight:700;letter-spacing:2px;}
+.f-photo{
+  width:68px;height:84px;border-radius:4px;overflow:hidden;
+  border:2px solid #FFD700;background:#ddd;
+}
+.f-photo img{width:100%;height:100%;object-fit:cover;}
+.f-right{
+  flex:1;padding:10px 12px;
+  display:flex;flex-direction:column;justify-content:space-between;
+}
+.f-inst{font-size:7px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #eee;padding-bottom:4px;}
+.f-name{font-size:13px;font-weight:700;color:var(--navy);line-height:1.2;margin:4px 0;}
+.f-fields{display:flex;flex-direction:column;gap:3px;}
+.f-field label{font-size:7px;font-weight:600;color:#aaa;text-transform:uppercase;letter-spacing:.4px;display:block;}
+.f-field span{font-size:9px;font-weight:600;color:var(--navy);}
+.f-carrera{
+  background:var(--navy);border-radius:3px;padding:3px 7px;
+  font-size:7.5px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.4px;
+}
+.f-logo{display:flex;align-items:center;justify-content:flex-end;gap:4px;}
+.f-logo-text{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--navy);line-height:1;}
+.diag{position:absolute;bottom:0;right:0;width:60px;height:60px;overflow:hidden;pointer-events:none;}
+.diag::before{content:'';position:absolute;bottom:-15px;right:-15px;width:60px;height:60px;background:var(--red);transform:rotate(45deg);opacity:.1;}
 
-        .form-group {
-            margin-bottom: 15px;
-            position: relative;
-            width: 100%;
-        }
+/* Reverso */
+.b-strip{background:var(--red);height:32px;margin-top:24px;}
+.b-content{padding:12px 16px;position:relative;}
+.b-logo{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.b-logo-text{font-size:28px;font-weight:900;color:#fff;line-height:1;}
+.b-logo img{height:28px;filter:brightness(0) invert(1);}
+.b-inst{font-size:8px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.4px;line-height:1.4;}
+.b-fields{display:flex;gap:16px;}
+.b-field label{font-size:7px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.4px;display:block;}
+.b-field span{font-size:11px;font-weight:700;color:#fff;}
+.b-field .small{font-size:8.5px;}
+.b-qr{position:absolute;right:12px;top:8px;background:#fff;padding:5px;border-radius:4px;}
+.b-qr svg,.b-qr canvas{width:56px!important;height:56px!important;}
+.b-note{position:absolute;bottom:10px;left:16px;right:72px;font-size:7.5px;color:rgba(255,255,255,.4);line-height:1.5;}
 
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #333;
-            font-size: 13px;
-            font-weight: 500;
-        }
+.flip-hint{font-size:12px;color:var(--red);font-weight:500;display:flex;align-items:center;gap:5px;}
+.flip-hint svg{width:14px;height:14px;}
 
-        .form-group input {
-            width: 100%;
-            padding: 11px 14px;
-            padding-left: 42px;
-            border: 1.5px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 14px;
-            background: #f8f9fa;
-            transition: all 0.3s ease;
-        }
+.carnet-actions{display:flex;gap:12px;}
+.btn{
+  display:flex;align-items:center;gap:8px;
+  padding:11px 22px;border-radius:8px;
+  font-size:13px;font-weight:600;cursor:pointer;border:none;
+  font-family:'Inter',sans-serif;transition:all .2s;
+}
+.btn-red{background:var(--red);color:#fff;}
+.btn-red:hover{background:#a01022;}
+.btn-navy{background:var(--navy);color:#fff;}
+.btn-navy:hover{background:var(--navy-dark);}
+.btn svg{width:15px;height:15px;}
 
-        .form-group input:focus {
-            outline: none;
-            border-color: #094173;
-            background: white;
-            box-shadow: 0 0 0 3px rgba(9, 65, 115, 0.1);
-        }
+/* ── DESCARGAR / IMPRIMIR ─────────────────────────────────────────── */
+.center-card{
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;text-align:center;
+  background:var(--white);border-radius:var(--radius);
+  border:1px solid var(--gray200);padding:48px;
+  max-width:480px;
+}
+.center-icon{
+  width:80px;height:80px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;margin-bottom:20px;
+}
+.center-icon.red-bg{background:var(--red-light);}
+.center-icon.blue-bg{background:var(--navy-light);}
+.center-icon svg{width:36px;height:36px;}
+.center-card h2{font-size:18px;font-weight:600;margin-bottom:8px;}
+.center-card p{font-size:13px;color:var(--gray400);margin-bottom:24px;line-height:1.6;}
 
-        .form-icon {
-            position: absolute;
-            left: 13px;
-            top: 38px;
-            transform: translateY(-50%);
-            display: flex;
-            align-items: center;
-            pointer-events: none;
-        }
+/* ── OVERLAY ─────────────────────────────────────────── */
+.overlay{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:90;
+}
+.overlay.active{display:block;}
 
-        .form-icon svg {
-            width: 16px;
-            height: 16px;
-            stroke: #094173;
-            fill: none;
-            stroke-width: 1.8;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
+/* ── RESPONSIVE ─────────────────────────────────────────── */
+@media(max-width:768px){
+  :root{--sidebar-w:240px;}
+  .sidebar{transform:translateX(-100%);}
+  .sidebar.open{transform:translateX(0);}
+  .main{margin-left:0;}
+  .hamburger{display:flex;}
+  .topbar{padding:0 16px;}
+  .content{padding:16px;}
+  .cards-grid{grid-template-columns:1fr;}
+  .scene{width:min(340px,calc(100vw - 40px));height:215px;}
+}
+@media(max-width:400px){
+  .scene{height:200px;}
+  .f-carnet-label{font-size:15px;}
+  .f-name{font-size:11px;}
+}
 
-        .password-toggle {
-            position: absolute;
-            right: 13px;
-            top: 38px;
-            transform: translateY(-50%);
-            color: #888;
-            cursor: pointer;
-            background: none;
-            border: none;
-            padding: 0;
-            display: flex;
-            align-items: center;
-        }
-
-        .password-toggle svg {
-            width: 16px;
-            height: 16px;
-            stroke: #888;
-            fill: none;
-            stroke-width: 1.8;
-            transition: stroke 0.2s;
-        }
-
-        .password-toggle:hover svg {
-            stroke: #094173;
-        }
-
-        .forgot-password {
-            text-align: right;
-            margin-top: 5px;
-            margin-bottom: 18px;
-            width: 100%;
-        }
-
-        .forgot-password a {
-            color: #094173;
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 500;
-        }
-
-        .forgot-password a:hover {
-            text-decoration: underline;
-        }
-
-        .btn-login {
-            width: 100%;
-            padding: 12px;
-            background: #dc0000;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .btn-login:hover {
-            background: #b80000;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(220, 0, 0, 0.25);
-        }
-
-        .btn-login:disabled {
-            background: #999;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .footer {
-            text-align: center;
-            margin-top: 18px;
-            color: #999;
-            font-size: 11px;
-            width: 100%;
-        }
-
-        /* Responsive */
-        @media (max-width: 900px) {
-            body {
-                flex-direction: column;
-            }
-
-            .left-section {
-                flex: 0 0 auto;
-                padding: 30px;
-                min-height: 35vh;
-                min-width: auto;
-            }
-
-            .right-section {
-                flex: 0 0 auto;
-                padding: 30px 20px;
-                min-height: 65vh;
-                min-width: auto;
-            }
-
-            .login-card {
-                padding: 25px 20px;
-                max-width: 320px;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .left-section img {
-                max-width: 180px;
-            }
-
-            .login-card {
-                max-width: 100%;
-                padding: 20px 15px;
-            }
-
-            h2 {
-                font-size: 22px;
-            }
-
-            .form-group input {
-                padding: 10px 12px;
-                padding-left: 38px;
-            }
-        }
-    </style>
+@media print{
+  .sidebar,.topbar,.carnet-actions,.flip-hint{display:none!important;}
+  .main{margin-left:0;}
+  .content{padding:0;}
+  .scene{box-shadow:none;}
+}
+</style>
 </head>
 <body>
-    <div class="left-section">
-        <img src="public/imagenes2.png/uagrm-logo.jpg" alt="UNIVERSIDAD AUTÓNOMA GABRIEL RENÉ MORENO">
+
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <img src="https://www.uagrm.edu.bo/img/logo-88x707-gray.png" onerror="this.style.display='none'" alt="UAGRM"/>
+    <div class="sidebar-brand">
+      Universidad Autónoma<br>Gabriel René Moreno
+      <span>Carnetización Digital</span>
+    </div>
+  </div>
+
+  <div class="user-card">
+    <div class="user-avatar"><img id="sidebarFoto" src="" alt=""/></div>
+    <div class="user-info">
+      <div class="user-welcome">Bienvenido(a)</div>
+      <div class="user-name" id="sidebarNombre">—</div>
+      <div class="user-carrera" id="sidebarCarrera">—</div>
+    </div>
+  </div>
+
+  <nav class="nav">
+    <div class="nav-section">Principal</div>
+    <button class="nav-item active" data-view="inicio" onclick="showView('inicio',this)">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Inicio
+    </button>
+
+    <div class="nav-section">Carnet</div>
+    <button class="nav-item" data-view="verCarnet" onclick="showView('verCarnet',this)">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M16 10a2 2 0 1 1-4 0 2 2 0 0 1 4 0z"/><path d="M6 10h2M6 14h12"/></svg>
+      Ver Carnet
+    </button>
+    <button class="nav-item" data-view="descargar" onclick="showView('descargar',this)">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Descargar Carnet
+    </button>
+    <button class="nav-item" data-view="imprimir" onclick="showView('imprimir',this)">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Imprimir Carnet
+    </button>
+  </nav>
+
+  <div class="sidebar-footer">
+    <button class="btn-logout" onclick="cerrarSesion()">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Cerrar sesión
+    </button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <button class="hamburger" onclick="toggleSidebar()">
+        <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <div class="topbar-title">
+        <h1 id="topbarTitle">Inicio</h1>
+        <p id="topbarSubtitle">Sistema de gestión de credenciales universitarias</p>
+      </div>
+    </div>
+    <div class="topbar-avatar"><img id="topbarFoto" src="" alt=""/></div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- ── INICIO ── -->
+    <div class="view active" id="view-inicio">
+      <div class="cards-grid">
+        <div class="action-card" onclick="showView('verCarnet', document.querySelector('[data-view=verCarnet]'))">
+          <div class="action-card-left">
+            <div class="action-icon green">
+              <svg fill="none" stroke="#16a34a" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M16 10a2 2 0 1 1-4 0 2 2 0 0 1 4 0z"/><path d="M6 10h2M6 14h12"/></svg>
+            </div>
+            <div>
+              <h3>Ver Carnet</h3>
+              <p>Ver la vista previa de tu carnet digital</p>
+            </div>
+          </div>
+          <div class="action-chevron"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></div>
+        </div>
+
+        <div class="action-card" onclick="showView('descargar', document.querySelector('[data-view=descargar]'))">
+          <div class="action-card-left">
+            <div class="action-icon red">
+              <svg fill="none" stroke="#dc2626" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </div>
+            <div>
+              <h3>Descargar Carnet</h3>
+              <p>Descarga tu carnet en PDF</p>
+            </div>
+          </div>
+          <div class="action-chevron"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></div>
+        </div>
+
+        <div class="action-card" onclick="showView('imprimir', document.querySelector('[data-view=imprimir]'))">
+          <div class="action-card-left">
+            <div class="action-icon blue">
+              <svg fill="none" stroke="#2563eb" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            </div>
+            <div>
+              <h3>Imprimir Carnet</h3>
+              <p>Imprime tu carnet</p>
+            </div>
+          </div>
+          <div class="action-chevron"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></div>
+        </div>
+      </div>
     </div>
 
-    <div class="right-section">
-        <div class="login-card">
-            <div class="logo">
-                <img src="public/imagenes2.png/ULTRAPROFONDO.png">
+    <!-- ── VER CARNET ── -->
+    <div class="view" id="view-verCarnet">
+      <div class="carnet-center">
+        <div class="scene" id="scene" onclick="this.classList.toggle('flipped')">
+          <div class="card-flip">
+
+            <!-- FRENTE -->
+            <div class="face face-front">
+              <div class="f-header">
+                <span class="f-header-title">Universidad Autónoma Gabriel René Moreno</span>
+                <img src="https://www.uagrm.edu.bo/img/logo-88x707-gray.png" onerror="this.style.display='none'"/>
+              </div>
+              <div class="f-body">
+                <div class="f-left">
+                  <div class="f-carnet-label">CARNET<span>UNIVER<br>SITARIO</span></div>
+                  <div class="f-photo"><img id="fotoCarnet" src="" alt="Foto"/></div>
+                </div>
+                <div class="f-right">
+                  <div class="f-inst">Universidad Autónoma Gabriel René Moreno</div>
+                  <div class="f-name" id="nombreCarnet">—</div>
+                  <div class="f-fields">
+                    <div class="f-field"><label>Registro</label><span id="registroCarnet">—</span></div>
+                    <div class="f-field"><label>Emisión</label><span id="emisionCarnet">—</span></div>
+                    <div class="f-field"><label>Vencimiento</label><span id="vencimientoCarnet">—</span></div>
+                  </div>
+                  <div class="f-carrera" id="carreraCarnet">—</div>
+                  <div class="f-logo"><span class="f-logo-text">UA<br>GRM</span></div>
+                </div>
+              </div>
+              <div class="diag"></div>
             </div>
 
-            <h2>Iniciar sesión</h2>
-            <p class="welcome-text">Bienvenido de nuevo. Por favor, ingresa tus credenciales</p>
-
-            <form id="syncForm" action="/api/sync" method="POST">
-                <div class="form-group">
-                    <label for="username">Código de usuario</label>
-                    <!-- Icono persona (outline) -->
-                    <span class="form-icon">
-                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12z"/>
-                            <path d="M12 14.4c-4.8 0-8.4 2.4-8.4 5.4v1.2h16.8v-1.2c0-3-3.6-5.4-8.4-5.4z"/>
-                        </svg>
-                    </span>
-                    <input 
-                        type="text" 
-                        id="username" 
-                        name="username" 
-                        placeholder="Código de usuario"
-                        required
-                    >
+            <!-- REVERSO -->
+            <div class="face face-back" style="position:relative">
+              <div class="b-strip"></div>
+              <div class="b-content">
+                <div class="b-logo">
+                  <span class="b-logo-text">UAGRM</span>
+                  <img src="https://www.uagrm.edu.bo/img/logo-88x707-gray.png" onerror="this.style.display='none'" style="height:24px"/>
+                  <div class="b-inst">Universidad Autónoma<br>Gabriel René Moreno</div>
                 </div>
-
-                <div class="form-group">
-                    <label for="password">Contraseña</label>
-                    <!-- Icono candado (outline) -->
-                    <span class="form-icon">
-                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="5" y="11" width="14" height="10" rx="2"/>
-                            <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
-                        </svg>
-                    </span>
-                    <input 
-                        type="password" 
-                        id="password" 
-                        name="password" 
-                        placeholder="Contraseña"
-                        required
-                    >
-                    <!-- Icono ojo (toggle abierto/cerrado) -->
-                    <button type="button" class="password-toggle" onclick="togglePasswordVisibility()">
-                        <!-- Ojo abierto (visible por defecto) -->
-                        <svg id="eyeOpen" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                            <circle cx="12" cy="12" r="3"/>
-                        </svg>
-                        <!-- Ojo cerrado (oculto por defecto) -->
-                        <svg id="eyeClosed" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:none;">
-                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
-                            <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
-                            <line x1="1" y1="1" x2="23" y2="23"/>
-                        </svg>
-                    </button>
+                <div class="b-fields">
+                  <div class="b-field"><label>C.I.</label><span id="ciCarnet">—</span></div>
+                  <div class="b-field"><label>Carrera</label><span class="small" id="carreraBack">—</span></div>
+                  <div class="b-field"><label>Facultad</label><span class="small" id="facultadCarnet">—</span></div>
                 </div>
+              </div>
+              <div class="b-qr" id="qrBox"></div>
+              <div class="b-note">Este carnet es de uso personal e intransferible.<br>En caso de pérdida reportar inmediatamente.</div>
+            </div>
 
-                <div class="forgot-password">
-                    <a href="#">¿Olvidaste tu contraseña?</a>
-                </div>
-
-                <button type="submit" class="btn-login" id="submitBtn">Iniciar Sesión</button>
-
-                <p class="footer">© 2025 UAGRM.</p>
-            </form>
+          </div>
         </div>
+
+        <div class="flip-hint">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 15l6 6m-6-6v4.8m0-4.8h4.8"/><path d="M9 19.8V15m0 0H4.2M9 15l-6 6"/><path d="M15 4.2V9m0 0h4.8M15 9l6-6"/><path d="M9 4.2V9m0 0H4.2M9 9L3 3"/></svg>
+          Toca el carnet para girarlo
+        </div>
+
+        <div class="carnet-actions">
+          <button class="btn btn-red" onclick="descargarPDF()">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Descargar PDF
+          </button>
+          <button class="btn btn-navy" onclick="imprimirCarnet()">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            Imprimir
+          </button>
+        </div>
+      </div>
     </div>
 
-    <script>
-        function togglePasswordVisibility() {
-            const passwordInput = document.getElementById('password');
-            const eyeOpen   = document.getElementById('eyeOpen');
-            const eyeClosed = document.getElementById('eyeClosed');
-            
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                eyeOpen.style.display   = 'none';
-                eyeClosed.style.display = 'block';
-            } else {
-                passwordInput.type = 'password';
-                eyeOpen.style.display   = 'block';
-                eyeClosed.style.display = 'none';
-            }
-        }
+    <!-- ── DESCARGAR ── -->
+    <div class="view" id="view-descargar">
+      <div class="center-card">
+        <div class="center-icon red-bg">
+          <svg fill="none" stroke="#dc2626" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        </div>
+        <h2>Carnet en PDF</h2>
+        <p>Haz clic en el botón para descargar<br>tu carnet en formato PDF</p>
+        <button class="btn btn-red" onclick="descargarPDF()">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Descargar PDF
+        </button>
+      </div>
+    </div>
 
-        document.getElementById('syncForm').addEventListener('submit', function(e) {
-            const submitBtn = document.getElementById('submitBtn');
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Iniciando sesión...';
-        });
-    </script>
+    <!-- ── IMPRIMIR ── -->
+    <div class="view" id="view-imprimir">
+      <div class="center-card">
+        <div class="center-icon blue-bg">
+          <svg fill="none" stroke="#2563eb" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        </div>
+        <h2>Impresión del carnet</h2>
+        <p>Haz clic en el botón para enviar<br>tu carnet a la impresora</p>
+        <button class="btn btn-navy" onclick="imprimirCarnet()">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Imprimir ahora
+        </button>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+// ── Cargar datos ──────────────────────────────────────────────────────────────
+const stored = sessionStorage.getItem('carnet_data');
+if (!stored) {
+  alert('Sesión expirada. Vuelve a ingresar.');
+  window.location.href = 'index.html';
+} else {
+  const d = JSON.parse(stored);
+  init(d);
+}
+
+function init(d) {
+  const foto = d.foto_base64 || '';
+  const fotoSrc = foto
+    ? (foto.startsWith('data:') ? foto : 'data:image/jpeg;base64,' + foto)
+    : '';
+
+  // Sidebar
+  if (fotoSrc) {
+    document.getElementById('sidebarFoto').src = fotoSrc;
+    document.getElementById('topbarFoto').src  = fotoSrc;
+  }
+  document.getElementById('sidebarNombre').textContent  = d.nombre  || '—';
+  document.getElementById('sidebarCarrera').textContent = d.carrera || '—';
+
+  // Carnet frente
+  if (fotoSrc) document.getElementById('fotoCarnet').src = fotoSrc;
+  document.getElementById('nombreCarnet').textContent   = d.nombre  || '—';
+  document.getElementById('registroCarnet').textContent = d.registro || '—';
+  document.getElementById('carreraCarnet').textContent  = d.carrera || '—';
+
+  const hoy  = new Date();
+  const venc = new Date(hoy); venc.setFullYear(venc.getFullYear() + 1);
+  const fmt  = dt => dt.toLocaleDateString('es-BO',{day:'2-digit',month:'2-digit',year:'numeric'});
+  document.getElementById('emisionCarnet').textContent    = fmt(hoy);
+  document.getElementById('vencimientoCarnet').textContent = fmt(venc);
+
+  // Carnet reverso
+  document.getElementById('ciCarnet').textContent       = d.ci       || '—';
+  document.getElementById('carreraBack').textContent    = d.carrera  || '—';
+  document.getElementById('facultadCarnet').textContent = d.facultad || '—';
+
+  // QR
+  new QRCode(document.getElementById('qrBox'), {
+    text: d.registro || 'UAGRM',
+    width:56, height:56,
+    colorDark:'#003366', colorLight:'#ffffff',
+    correctLevel: QRCode.CorrectLevel.M
+  });
+}
+
+// ── Navegación ──────────────────────────────────────────────────────────────
+const titles = {
+  inicio:    ['Inicio',          'Sistema de gestión de credenciales universitarias'],
+  verCarnet: ['Ver Carnet',      'Vista previa de tu carnet universitario'],
+  descargar: ['Descargar Carnet','Descarga tu carnet en formato PDF'],
+  imprimir:  ['Imprimir Carnet', 'Envía tu carnet a una impresora'],
+};
+
+function showView(id, btn) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('view-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  const t = titles[id] || ['',''];
+  document.getElementById('topbarTitle').textContent    = t[0];
+  document.getElementById('topbarSubtitle').textContent = t[1];
+  closeSidebar();
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('active');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('active');
+}
+
+// ── Acciones ──────────────────────────────────────────────────────────────
+function imprimirCarnet() {
+  document.getElementById('scene').classList.remove('flipped');
+  showView('verCarnet', document.querySelector('[data-view=verCarnet]'));
+  setTimeout(() => window.print(), 400);
+}
+
+function descargarPDF() {
+  imprimirCarnet(); // El diálogo de impresión tiene opción "Guardar como PDF"
+}
+
+function cerrarSesion() {
+  sessionStorage.removeItem('carnet_data');
+  window.location.href = 'index.html';
+}
+</script>
 </body>
 </html>
