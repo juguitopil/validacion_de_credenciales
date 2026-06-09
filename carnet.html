@@ -8,186 +8,95 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --navy:#003366;--red:#c0132b;--gold:#FFD700;
-  --white:#fff;--gray:#f0f2f7;
+  --navy:#003366;--navy-dark:#002244;--red:#c0132b;--gold:#FFD700;
+  --white:#fff;--gray:#f0f2f7;--gray200:#e4e7ec;--gray400:#9aa3b0;--gray600:#4b5563;
+  --sidebar-w:220px;--header-h:60px;
 }
-body{
-  font-family:'DM Sans',sans-serif;
-  background:linear-gradient(135deg,#001a33 0%,#003366 50%,#001a33 100%);
-  min-height:100vh;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;padding:24px;
-}
+html,body{height:100%}
+body{font-family:'DM Sans',sans-serif;color:#111827;}
 
-/* ── HEADER ── */
-.header{
-  display:flex;align-items:center;gap:14px;margin-bottom:32px;
+/* ── SIDEBAR ── */
+.sidebar{
+  position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-w);
+  background:var(--navy);z-index:100;
+  display:flex;flex-direction:column;
+  transition:transform .3s;
 }
-.header img{height:48px;filter:brightness(0) invert(1);}
-.header-text h1{
-  font-family:'Bebas Neue',sans-serif;font-size:22px;
-  color:#fff;letter-spacing:2px;
+.sidebar-header{
+  padding:18px 16px;border-bottom:1px solid rgba(255,255,255,.1);
+  display:flex;align-items:center;gap:10px;
 }
-.header-text p{font-size:12px;color:rgba(255,255,255,.6);letter-spacing:.5px;}
-
-/* ── CARD FLIP CONTAINER ── */
-.scene{
-  width:380px;height:240px;perspective:1000px;cursor:pointer;
-  margin-bottom:20px;
+.sidebar-header img{height:30px;filter:brightness(0) invert(1);}
+.sidebar-brand{color:#fff;font-size:13px;font-weight:600;line-height:1.3;}
+.sidebar-brand span{display:block;color:rgba(255,255,255,.5);font-size:10px;font-weight:400;text-transform:uppercase;letter-spacing:.8px;margin-top:1px;}
+.user-card{
+  margin:12px;padding:12px;border-radius:10px;
+  background:rgba(255,255,255,.08);
+  display:flex;align-items:center;gap:10px;
 }
-.card-flip{
-  width:100%;height:100%;position:relative;
-  transform-style:preserve-3d;transition:transform .7s cubic-bezier(.4,0,.2,1);
+.user-avatar{
+  width:38px;height:38px;border-radius:50%;overflow:hidden;
+  border:2px solid rgba(255,255,255,.3);flex-shrink:0;background:#b0b8c4;
+  display:flex;align-items:center;justify-content:center;
 }
-.scene:hover .card-flip,
-.scene.flipped .card-flip{transform:rotateY(180deg);}
-
-.face{
-  position:absolute;inset:0;border-radius:16px;
-  backface-visibility:hidden;-webkit-backface-visibility:hidden;
-  overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5);
+.user-avatar img{width:100%;height:100%;object-fit:cover;}
+.user-info{min-width:0;flex:1;}
+.user-welcome{font-size:9px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.5px;}
+.user-name{font-size:12px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.user-carrera{font-size:10px;color:rgba(255,255,255,.55);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.nav{padding:8px 0;flex:1;overflow-y:auto;}
+.nav-section{padding:8px 16px 4px;font-size:10px;font-weight:600;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:1px;}
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 16px;margin:1px 8px;border-radius:8px;
+  color:rgba(255,255,255,.65);font-size:13px;font-weight:500;
+  cursor:pointer;transition:all .15s;border:none;background:none;
+  width:calc(100% - 16px);text-align:left;font-family:'DM Sans',sans-serif;
 }
-.face-front{background:#fff;}
-.face-back{background:var(--navy);transform:rotateY(180deg);}
-
-/* ── FRONT FACE ── */
-.front-header{
-  background:var(--red);padding:8px 14px;
-  display:flex;align-items:center;justify-content:space-between;
-}
-.front-header .title{
-  font-family:'Bebas Neue',sans-serif;font-size:11px;
-  color:#fff;letter-spacing:1.5px;
-}
-.front-header .logo-small{height:22px;filter:brightness(0) invert(1);}
-
-.front-body{display:flex;height:calc(100% - 38px);}
-
-/* Franja izquierda azul */
-.front-left{
-  background:var(--navy);width:42%;
-  display:flex;flex-direction:column;align-items:center;
-  justify-content:center;gap:8px;padding:12px 8px;position:relative;
-}
-.front-left::after{
-  content:'';position:absolute;right:0;top:0;bottom:0;
-  width:6px;background:linear-gradient(180deg,var(--red) 0%,var(--red) 40%,var(--gold) 40%,var(--gold) 60%,var(--navy) 60%);
-}
-.carnet-title{
-  font-family:'Bebas Neue',sans-serif;color:#fff;
-  font-size:20px;letter-spacing:2px;text-align:center;line-height:1.1;
-}
-.carnet-title span{color:var(--gold);display:block;}
-.photo-box{
-  width:72px;height:90px;border-radius:4px;overflow:hidden;
-  border:2px solid var(--gold);background:#ccc;
-}
-.photo-box img{width:100%;height:100%;object-fit:cover;}
-
-/* Franja derecha datos */
-.front-right{
-  flex:1;padding:12px 14px;
-  display:flex;flex-direction:column;justify-content:space-between;
-  background:linear-gradient(135deg,#fff 70%,#f8f0f0 100%);
-}
-.inst-name{
-  font-size:7.5px;font-weight:700;color:var(--red);
-  text-transform:uppercase;letter-spacing:.8px;
-  border-bottom:1px solid #eee;padding-bottom:4px;
-}
-.student-name{
-  font-size:13px;font-weight:700;color:var(--navy);
-  line-height:1.2;margin:4px 0;
-}
-.data-row{
-  display:flex;flex-direction:column;gap:2px;
-}
-.data-item{display:flex;flex-direction:column;}
-.data-label{font-size:7px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:.5px;}
-.data-value{font-size:9.5px;font-weight:600;color:var(--navy);}
-
-.carrera-box{
-  background:var(--navy);border-radius:4px;padding:4px 8px;
-  margin-top:4px;
-}
-.carrera-text{font-size:8px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.5px;}
-
-.logo-bottom{
-  display:flex;align-items:center;justify-content:flex-end;gap:6px;
-  margin-top:4px;
-}
-.logo-bottom .uagrm-text{
-  font-family:'Bebas Neue',sans-serif;font-size:22px;
-  color:var(--navy);letter-spacing:1px;line-height:1;
-}
-.logo-bottom img{height:28px;}
-
-/* Diagonal roja decorativa */
-.diag{
-  position:absolute;bottom:0;right:0;
-  width:80px;height:80px;overflow:hidden;pointer-events:none;
-}
-.diag::before{
-  content:'';position:absolute;
-  bottom:-20px;right:-20px;
-  width:80px;height:80px;
-  background:var(--red);
-  transform:rotate(45deg);
-  opacity:.12;
-}
-
-/* ── BACK FACE ── */
-.back-strip{
-  background:var(--red);height:36px;margin-top:28px;
-}
-.back-content{padding:16px 20px;}
-.back-logo{
-  display:flex;align-items:center;gap:10px;margin-bottom:12px;
-}
-.back-logo .ua-text{
-  font-family:'Bebas Neue',sans-serif;color:#fff;font-size:32px;line-height:1;
-}
-.back-logo .logo-img{height:36px;filter:brightness(0) invert(1);}
-.back-logo .inst-full{
-  font-size:9px;color:rgba(255,255,255,.7);
-  text-transform:uppercase;letter-spacing:.5px;line-height:1.4;
-}
-.back-qr{
-  position:absolute;right:16px;top:50%;transform:translateY(-50%);
-  background:#fff;padding:6px;border-radius:4px;
-}
-.back-qr svg{width:60px;height:60px;}
-.back-dates{
-  display:flex;gap:16px;margin-top:8px;
-}
-.date-item{display:flex;flex-direction:column;}
-.date-label{font-size:8px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.5px;}
-.date-value{font-size:12px;font-weight:700;color:#fff;}
-.back-note{
-  position:absolute;bottom:12px;left:16px;right:80px;
-  font-size:8px;color:rgba(255,255,255,.5);line-height:1.5;
-}
-.globe-watermark{
-  position:absolute;right:90px;bottom:20px;
-  opacity:.05;font-size:80px;
-}
-
-/* ── HINT ── */
-.hint{color:var(--red);font-size:12px;font-weight:500;letter-spacing:.3px;}
-
-/* ── ACTIONS ── */
-.actions{display:flex;gap:12px;margin-top:16px;}
-.btn{
-  padding:11px 24px;border-radius:8px;font-size:13px;
-  font-weight:600;cursor:pointer;border:none;
+.nav-item:hover{background:rgba(255,255,255,.1);color:#fff;}
+.nav-item.active{background:rgba(255,255,255,.15);color:#fff;}
+.sidebar-footer{padding:12px;border-top:1px solid rgba(255,255,255,.1);}
+.btn-logout{
   display:flex;align-items:center;gap:8px;
-  transition:all .2s;font-family:'DM Sans',sans-serif;
+  padding:9px 12px;border-radius:8px;
+  color:rgba(255,255,255,.5);font-size:13px;font-weight:500;
+  cursor:pointer;transition:all .15s;border:none;background:none;width:100%;font-family:'DM Sans',sans-serif;
 }
-.btn-red{background:var(--red);color:#fff;}
-.btn-red:hover{background:#a01022;transform:translateY(-1px);}
-.btn-blue{background:var(--navy);color:#fff;}
-.btn-blue:hover{background:#002244;transform:translateY(-1px);}
+.btn-logout:hover{color:#ff6b6b;background:rgba(255,0,0,.1);}
 
-/* ── LOADING STATE ── */
+/* ── MAIN ── */
+.main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh;background:linear-gradient(135deg,#001a33 0%,#003366 50%,#001a33 100%);}
+
+/* ── TOPBAR ── */
+.topbar{
+  height:var(--header-h);background:rgba(255,255,255,.06);backdrop-filter:blur(8px);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  display:flex;align-items:center;gap:16px;
+  padding:0 24px;position:sticky;top:0;z-index:50;
+}
+.hamburger{display:none;background:none;border:none;cursor:pointer;color:rgba(255,255,255,.7);padding:4px;}
+.topbar-title{flex:1;}
+.topbar-title h1{font-size:18px;font-weight:600;color:#fff;}
+.topbar-title p{font-size:12px;color:rgba(255,255,255,.5);margin-top:1px;}
+.topbar-avatar{
+  width:34px;height:34px;border-radius:50%;overflow:hidden;
+  border:2px solid rgba(255,255,255,.25);cursor:pointer;background:#b0b8c4;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.topbar-avatar img{width:100%;height:100%;object-fit:cover;}
+
+
+/* ── CONTENT ── */
+.content{
+  flex:1;padding:32px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+
+/* ── VIEWS ── */
+.view{display:none;width:100%;max-width:860px;}
+.view.active{display:flex;flex-direction:column;align-items:center;}
+
+/* ── LOADING ── */
 .loading-wrap{
   display:flex;flex-direction:column;align-items:center;gap:16px;
   color:rgba(255,255,255,.8);
@@ -199,7 +108,7 @@ body{
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* ── ERROR STATE ── */
+/* ── ERROR ── */
 .error-wrap{
   background:rgba(192,19,43,.15);border:1px solid rgba(192,19,43,.4);
   border-radius:12px;padding:24px 32px;text-align:center;color:#ff6b6b;
@@ -210,137 +119,275 @@ body{
 .btn-retry{
   margin-top:16px;background:var(--red);color:#fff;
   padding:10px 20px;border-radius:8px;border:none;
-  font-size:13px;font-weight:600;cursor:pointer;
-  font-family:'DM Sans',sans-serif;
+  font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;
 }
 
+/* ── INICIO ── */
+.cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;width:100%;max-width:700px;}
+.action-card{
+  background:rgba(255,255,255,.95);border-radius:12px;border:1px solid rgba(255,255,255,.2);
+  padding:20px;cursor:pointer;transition:all .2s;text-align:center;
+}
+.action-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.15);}
+
+.action-card h3{font-size:14px;font-weight:600;color:var(--navy);}
+.action-card p{font-size:12px;color:var(--gray600);margin-top:4px;}
+
+/* ── CARNET ── */
+.carnet-center{display:flex;flex-direction:column;align-items:center;gap:20px;width:100%;}
+.scene{width:380px;height:240px;perspective:1000px;cursor:pointer;}
+.card-flip{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.4,0,.2,1);}
+.scene:hover .card-flip,.scene.flipped .card-flip{transform:rotateY(180deg);}
+.face{position:absolute;inset:0;border-radius:14px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.35);}
+.face-front{transform:none;}
+.face-back{transform:rotateY(180deg);}
+.photo-box{width:78px;height:96px;border-radius:4px;overflow:hidden;border:2px solid var(--gold);background:#ccc;position:relative;}
+.photo-box img{width:100%;height:100%;object-fit:cover;display:block;}
+.photo-box img[src=""]{opacity:0;}
+.photo-box img[src=""] ~ .photo-placeholder{display:flex;}
+.photo-box img:not([src=""]) ~ .photo-placeholder{display:none;}
+.photo-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#b0b8c4;color:#fff;font-size:32px;pointer-events:none;}
+.student-name{font-size:13px;font-weight:700;color:var(--navy);line-height:1.2;}
+.back-qr{position:absolute;right:24px;top:50%;transform:translateY(-50%);background:#fff;padding:6px;border-radius:4px;}
+.back-qr svg,.back-qr canvas{width:56px!important;height:56px!important;display:block;}
+.hint{color:var(--red);font-size:12px;font-weight:500;display:flex;align-items:center;gap:5px;cursor:pointer;}
+.actions{display:flex;gap:12px;}
+.btn{
+  display:flex;align-items:center;gap:7px;
+  padding:11px 22px;border-radius:8px;font-size:13px;
+  font-weight:600;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all .2s;
+}
+.btn-red{background:var(--red);color:#fff;}
+.btn-red:hover{background:#a01022;}
+.btn-blue{background:var(--navy);color:#fff;}
+.btn-blue:hover{background:var(--navy-dark);}
+
+
+/* ── CENTER CARD (descargar / imprimir) ── */
+.center-card{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  background:rgba(255,255,255,.95);border-radius:14px;padding:48px;max-width:420px;
+}
+.center-icon{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
+
+.center-icon.red-bg{background:#fef2f2;color:#dc2626;}
+.center-icon.blue-bg{background:#e8f0f7;color:var(--navy);}
+.center-card h2{font-size:18px;font-weight:600;color:var(--navy);margin-bottom:8px;}
+.center-card p{font-size:13px;color:var(--gray600);margin-bottom:20px;line-height:1.6;}
+
+/* ── OVERLAY ── */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:90;}
+.overlay.active{display:block;}
+
 .hidden{display:none!important;}
+
+/* ── ICONOS SVG ── */
+.icon-svg{width:22px;height:22px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;}
+.btn .icon-svg{width:18px;height:18px;}
+.sidebar .icon-svg{width:22px;height:22px;}
+.action-card .icon-svg{width:28px;height:28px;display:block;margin:0 auto 10px;}
+.center-icon .icon-svg{width:32px;height:32px;}
+
+/* ── RWD ── */
+@media(max-width:768px){
+  :root{--sidebar-w:240px;}
+  .sidebar{transform:translateX(-100%);}
+  .sidebar.open{transform:translateX(0);}
+  .main{margin-left:0;}
+  .hamburger{display:flex;}
+  .content{padding:24px 16px;}
+  .cards-grid{grid-template-columns:1fr;}
+  .scene{width:min(340px,calc(100vw - 32px));height:215px;}
+}
+@media(max-width:480px){
+  .scene{width:calc(100vw - 32px);height:auto;aspect-ratio:380/240;max-width:380px;perspective:800px;}
+  .photo-box{width:clamp(52px,20vw,68px);height:clamp(65px,25vw,86px);}
+  .actions{flex-direction:column;width:100%;max-width:260px;}
+  .btn{width:100%;justify-content:center;}
+  .back-qr svg,.back-qr canvas{width:44px!important;height:44px!important;}
+  .center-card{padding:32px 20px;}
+  .topbar{padding:0 12px;}
+  .topbar-title p{display:none;}
+}
+@media print{
+  .sidebar,.topbar,.hint,.actions,.overlay{display:none!important}
+  .main{margin-left:0}
+  .content{padding:0}
+  .scene{box-shadow:none!important}
+  .face{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
 </style>
 </head>
 <body>
 
-<div class="header">
-  <img src="https://www.uagrm.edu.bo/img/logo-88x707-gray.png" alt="UAGRM" onerror="this.style.display='none'"/>
-  <div class="header-text">
-    <h1>UAGRM · Carnetización</h1>
-    <p>SISTEMA DE GESTIÓN DE CREDENCIALES UNIVERSITARIAS</p>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <img src="https://www.uagrm.edu.bo/img/logo-88x707-gray.png" onerror="this.style.display='none'" alt="UAGRM"/>
+    <div class="sidebar-brand">UAGRM<span>Carnetización Digital</span></div>
   </div>
-</div>
-
-<!-- LOADING -->
-<div class="loading-wrap" id="loadingWrap">
-  <div class="spinner"></div>
-  <p id="loadingMsg">Cargando carnet...</p>
-</div>
-
-<!-- ERROR -->
-<div class="error-wrap hidden" id="errorWrap">
-  <h3>No se pudo cargar el carnet</h3>
-  <p id="errorMsg">Error desconocido.</p>
-  <button class="btn-retry" onclick="window.location.href='index.html'">Volver</button>
-</div>
-
-<!-- CARNET -->
-<div class="hidden" id="carnetWrap">
-  <div class="scene" id="scene" onclick="this.classList.toggle('flipped')" title="Clic para girar">
-    <div class="card-flip">
-
-      <!-- FRENTE -->
-      <div class="face face-front">
-        <div class="front-header">
-          <span class="title">Universidad Autónoma Gabriel René Moreno</span>
-          <img class="logo-small" src="https://www.uagrm.edu.bo/img/logo-88x707-gray.png" onerror="this.style.display='none'"/>
-        </div>
-        <div class="front-body">
-          <div class="front-left">
-            <div class="carnet-title">CARNET<span>UNIVER<br>SITARIO</span></div>
-            <div class="photo-box">
-              <img id="fotoCarnet" src="" alt="Foto"/>
-            </div>
-          </div>
-          <div class="front-right">
-            <div class="inst-name">Universidad Autónoma Gabriel René Moreno</div>
-            <div class="student-name" id="nombreCarnet">—</div>
-            <div class="data-row">
-              <div class="data-item">
-                <span class="data-label">Registro</span>
-                <span class="data-value" id="registroCarnet">—</span>
-              </div>
-              <div class="data-item">
-                <span class="data-label">Emisión</span>
-                <span class="data-value" id="emisionCarnet">—</span>
-              </div>
-              <div class="data-item">
-                <span class="data-label">Vencimiento</span>
-                <span class="data-value" id="vencimientoCarnet">—</span>
-              </div>
-            </div>
-            <div class="carrera-box">
-              <div class="carrera-text" id="carreraCarnet">—</div>
-            </div>
-            <div class="logo-bottom">
-              <span class="uagrm-text">UA<br>GRM</span>
-              <img src="https://www.uagrm.edu.bo/img/logo-88x707-gray.png" onerror="this.style.display='none'" style="height:28px;filter:hue-rotate(0deg)"/>
-            </div>
-          </div>
-        </div>
-        <div class="diag"></div>
-      </div>
-
-      <!-- REVERSO -->
-      <div class="face face-back" style="position:relative;">
-        <div class="back-strip"></div>
-        <div class="back-content">
-          <div class="back-logo">
-            <img class="logo-img" src="https://www.uagrm.edu.bo/img/logo-88x707-gray.png" onerror="this.style.display='none'"/>
-            <div>
-              <div class="ua-text">UAGRM</div>
-              <div class="inst-full">Universidad Autónoma<br>Gabriel René Moreno</div>
-            </div>
-          </div>
-          <div class="back-dates">
-            <div class="date-item">
-              <span class="date-label">C.I.</span>
-              <span class="date-value" id="ciCarnet">—</span>
-            </div>
-            <div class="date-item">
-              <span class="date-label">Carrera</span>
-              <span class="date-value" style="font-size:9px" id="carreraBack">—</span>
-            </div>
-            <div class="date-item">
-              <span class="date-label">Facultad</span>
-              <span class="date-value" style="font-size:9px" id="facultadCarnet">—</span>
-            </div>
-          </div>
-        </div>
-        <div class="back-qr" id="qrBox"></div>
-        <div class="back-note">
-          Este carnet es de uso personal e intransferible.<br>
-          En caso de pérdida o robo, reportar inmediatamente.
-        </div>
-        <div class="globe-watermark">🌐</div>
-      </div>
-
+  <div class="user-card">
+    <div class="user-avatar">
+      <img id="sidebarFoto" src="" alt=""/>
+      <svg class="icon-svg" id="sidebarPlaceholder" viewBox="0 -960 960 960" style="display:none;width:20px;height:20px"><path d="M160-80q-33 0-56.5-23.5T80-160v-440q0-33 23.5-56.5T160-680h200v-120q0-33 23.5-56.5T440-880h80q33 0 56.5 23.5T600-800v120h200q33 0 56.5 23.5T880-600v440q0 33-23.5 56.5T800-80H160Zm0-80h640v-440H600q0 33-23.5 56.5T520-520h-80q-33 0-56.5-23.5T360-600H160v440Zm80-80h240v-18q0-17-9.5-31.5T444-312q-20-9-40.5-13.5T360-330q-23 0-43.5 4.5T276-312q-17 8-26.5 22.5T240-258v18Zm320-60h160v-60H560v60Zm-157.5-77.5Q420-395 420-420t-17.5-42.5Q385-480 360-480t-42.5 17.5Q300-445 300-420t17.5 42.5Q335-360 360-360t42.5-17.5ZM560-420h160v-60H560v60ZM440-600h80v-200h-80v200Zm40 220Z"/></svg>
+    </div>
+    <div class="user-info">
+      <div class="user-welcome">Bienvenido(a)</div>
+      <div class="user-name" id="sidebarNombre">—</div>
+      <div class="user-carrera" id="sidebarCarrera">—</div>
     </div>
   </div>
-
-  <p class="hint">👆 Toca el carnet para girarlo</p>
-
-  <div class="actions">
-    <button class="btn btn-red" id="btnDescargar">
-      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      Descargar PDF
+  <nav class="nav">
+    <div class="nav-section">Principal</div>
+    <button class="nav-item active" data-view="inicio" onclick="showView('inicio',this)">
+      <svg class="icon-svg" viewBox="0 -960 960 960"><path d="M520-600v-240h320v240H520ZM120-440v-400h320v400H120Zm400 320v-400h320v400H520Zm-400 0v-240h320v240H120Zm80-400h160v-240H200v240Zm400 320h160v-240H600v240Zm0-480h160v-80H600v80ZM200-200h160v-80H200v80Zm160-320Zm240-160Zm0 240ZM360-280Z"/></svg> Inicio
     </button>
-    <button class="btn btn-blue" id="btnImprimir">
-      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-      Imprimir
+    <div class="nav-section">Carnet</div>
+    <button class="nav-item" data-view="verCarnet" onclick="showView('verCarnet',this)">
+      <svg class="icon-svg" viewBox="0 -960 960 960"><path d="M160-80q-33 0-56.5-23.5T80-160v-440q0-33 23.5-56.5T160-680h200v-120q0-33 23.5-56.5T440-880h80q33 0 56.5 23.5T600-800v120h200q33 0 56.5 23.5T880-600v440q0 33-23.5 56.5T800-80H160Zm0-80h640v-440H600q0 33-23.5 56.5T520-520h-80q-33 0-56.5-23.5T360-600H160v440Zm80-80h240v-18q0-17-9.5-31.5T444-312q-20-9-40.5-13.5T360-330q-23 0-43.5 4.5T276-312q-17 8-26.5 22.5T240-258v18Zm320-60h160v-60H560v60Zm-157.5-77.5Q420-395 420-420t-17.5-42.5Q385-480 360-480t-42.5 17.5Q300-445 300-420t17.5 42.5Q335-360 360-360t42.5-17.5ZM560-420h160v-60H560v60ZM440-600h80v-200h-80v200Zm40 220Z"/></svg> Ver Carnet
     </button>
+    <button class="nav-item" data-view="descargar" onclick="showView('descargar',this)">
+      <svg class="icon-svg" viewBox="0 -960 960 960"><path d="M360-460h40v-80h40q17 0 28.5-11.5T480-580v-40q0-17-11.5-28.5T440-660h-80v200Zm40-120v-40h40v40h-40Zm120 120h80q17 0 28.5-11.5T640-500v-120q0-17-11.5-28.5T600-660h-80v200Zm40-40v-120h40v120h-40Zm120 40h40v-80h40v-40h-40v-40h40v-40h-80v200ZM320-240q-33 0-56.5-23.5T240-320v-480q0-33 23.5-56.5T320-880h480q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H320Zm0-80h480v-480H320v480ZM160-80q-33 0-56.5-23.5T80-160v-560h80v560h560v80H160Zm160-720v480-480Z"/></svg> Descargar
+    </button>
+    <button class="nav-item" data-view="imprimir" onclick="showView('imprimir',this)">
+      <svg class="icon-svg" viewBox="0 -960 960 960"><path d="M640-640v-120H320v120h-80v-200h480v200h-80Zm-480 80h640-640Zm560 100q17 0 28.5-11.5T760-500q0-17-11.5-28.5T720-540q-17 0-28.5 11.5T680-500q0 17 11.5 28.5T720-460Zm-80 260v-160H320v160h320Zm80 80H240v-160H80v-240q0-51 35-85.5t85-34.5h560q51 0 85.5 34.5T880-520v240H720v160Zm80-240v-160q0-17-11.5-28.5T760-560H200q-17 0-28.5 11.5T160-520v160h80v-80h480v80h80Z"/></svg> Imprimir
+    </button>
+  </nav>
+  <div class="sidebar-footer">
+    <button class="btn-logout" onclick="cerrarSesion()">
+      <svg class="icon-svg" viewBox="0 -960 960 960" fill="#ff6b6b"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h280v80H200Zm440-160-55-58 102-102H360v-80h327L585-622l55-58 200 200-200 200Z"/></svg> Cerrar sesión
+    </button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <header class="topbar">
+    <button class="hamburger" onclick="toggleSidebar()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+    <div class="topbar-title">
+      <h1 id="topbarTitle">Inicio</h1>
+      <p id="topbarSubtitle">Sistema de Carnetización Digital</p>
+    </div>
+    <div class="topbar-avatar">
+      <img id="topbarFoto" src="" alt=""/>
+      <svg class="icon-svg" id="topbarPlaceholder" viewBox="0 -960 960 960" style="display:none;width:18px;height:18px"><path d="M160-80q-33 0-56.5-23.5T80-160v-440q0-33 23.5-56.5T160-680h200v-120q0-33 23.5-56.5T440-880h80q33 0 56.5 23.5T600-800v120h200q33 0 56.5 23.5T880-600v440q0 33-23.5 56.5T800-80H160Zm0-80h640v-440H600q0 33-23.5 56.5T520-520h-80q-33 0-56.5-23.5T360-600H160v440Zm80-80h240v-18q0-17-9.5-31.5T444-312q-20-9-40.5-13.5T360-330q-23 0-43.5 4.5T276-312q-17 8-26.5 22.5T240-258v18Zm320-60h160v-60H560v60Zm-157.5-77.5Q420-395 420-420t-17.5-42.5Q385-480 360-480t-42.5 17.5Q300-445 300-420t17.5 42.5Q335-360 360-360t42.5-17.5ZM560-420h160v-60H560v60ZM440-600h80v-200h-80v200Zm40 220Z"/></svg>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- LOADING -->
+    <div class="loading-wrap" id="loadingWrap">
+      <div class="spinner"></div>
+      <p id="loadingMsg">Cargando carnet...</p>
+    </div>
+
+    <!-- ERROR -->
+    <div class="error-wrap hidden" id="errorWrap">
+      <h3>No se pudo cargar el carnet</h3>
+      <p id="errorMsg">Error desconocido.</p>
+      <button class="btn-retry" onclick="window.location.href='index.html'">Volver</button>
+    </div>
+
+    <!-- ── INICIO ── -->
+    <div class="view" id="view-inicio">
+      <div class="cards-grid">
+        <div class="action-card" onclick="showView('verCarnet', document.querySelector('[data-view=verCarnet]'))">
+          <svg class="icon-svg" viewBox="0 -960 960 960" fill="#16a34a"><path d="M160-80q-33 0-56.5-23.5T80-160v-440q0-33 23.5-56.5T160-680h200v-120q0-33 23.5-56.5T440-880h80q33 0 56.5 23.5T600-800v120h200q33 0 56.5 23.5T880-600v440q0 33-23.5 56.5T800-80H160Zm0-80h640v-440H600q0 33-23.5 56.5T520-520h-80q-33 0-56.5-23.5T360-600H160v440Zm80-80h240v-18q0-17-9.5-31.5T444-312q-20-9-40.5-13.5T360-330q-23 0-43.5 4.5T276-312q-17 8-26.5 22.5T240-258v18Zm320-60h160v-60H560v60Zm-157.5-77.5Q420-395 420-420t-17.5-42.5Q385-480 360-480t-42.5 17.5Q300-445 300-420t17.5 42.5Q335-360 360-360t42.5-17.5ZM560-420h160v-60H560v60ZM440-600h80v-200h-80v200Zm40 220Z"/></svg>
+          <h3>Ver Carnet</h3>
+          <p>Vista previa de tu carnet digital</p>
+        </div>
+        <div class="action-card" onclick="showView('descargar', document.querySelector('[data-view=descargar]'))">
+          <svg class="icon-svg" viewBox="0 -960 960 960" fill="#dc2626"><path d="M360-460h40v-80h40q17 0 28.5-11.5T480-580v-40q0-17-11.5-28.5T440-660h-80v200Zm40-120v-40h40v40h-40Zm120 120h80q17 0 28.5-11.5T640-500v-120q0-17-11.5-28.5T600-660h-80v200Zm40-40v-120h40v120h-40Zm120 40h40v-80h40v-40h-40v-40h40v-40h-80v200ZM320-240q-33 0-56.5-23.5T240-320v-480q0-33 23.5-56.5T320-880h480q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H320Zm0-80h480v-480H320v480ZM160-80q-33 0-56.5-23.5T80-160v-560h80v560h560v80H160Zm160-720v480-480Z"/></svg>
+          <h3>Descargar Carnet</h3>
+          <p>Descarga tu carnet en formato PDF</p>
+        </div>
+        <div class="action-card" onclick="showView('imprimir', document.querySelector('[data-view=imprimir]'))">
+          <svg class="icon-svg" viewBox="0 -960 960 960" fill="#2563eb"><path d="M640-640v-120H320v120h-80v-200h480v200h-80Zm-480 80h640-640Zm560 100q17 0 28.5-11.5T760-500q0-17-11.5-28.5T720-540q-17 0-28.5 11.5T680-500q0 17 11.5 28.5T720-460Zm-80 260v-160H320v160h320Zm80 80H240v-160H80v-240q0-51 35-85.5t85-34.5h560q51 0 85.5 34.5T880-520v240H720v160Zm80-240v-160q0-17-11.5-28.5T760-560H200q-17 0-28.5 11.5T160-520v160h80v-80h480v80h80Z"/></svg>
+          <h3>Imprimir Carnet</h3>
+          <p>Envía tu carnet a la impresora</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── VER CARNET ── -->
+    <div class="hidden" id="carnetWrap">
+      <div class="carnet-center">
+        <div class="scene" id="scene" onclick="this.classList.toggle('flipped')">
+          <div class="card-flip">
+            <div class="face face-front" style="position:relative">
+              <img src="public/imagenes2.png/carnet_frontal_uagrm.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;pointer-events:none"/>
+              <div class="photo-box" style="position:absolute;left:26px;top:62px;width:78px;height:96px;border:2px solid #FFD700;border-radius:3px;overflow:hidden;background:#ccc">
+                <img id="fotoCarnet" src="" alt="Foto" style="width:100%;height:100%;object-fit:cover;display:block"/>
+                <span class="photo-placeholder"><svg viewBox="0 -960 960 960" style="width:28px;height:28px;display:block;margin:auto"><path fill="#fff" d="M160-80q-33 0-56.5-23.5T80-160v-440q0-33 23.5-56.5T160-680h200v-120q0-33 23.5-56.5T440-880h80q33 0 56.5 23.5T600-800v120h200q33 0 56.5 23.5T880-600v440q0 33-23.5 56.5T800-80H160Zm0-80h640v-440H600q0 33-23.5 56.5T520-520h-80q-33 0-56.5-23.5T360-600H160v440Zm80-80h240v-18q0-17-9.5-31.5T444-312q-20-9-40.5-13.5T360-330q-23 0-43.5 4.5T276-312q-17 8-26.5 22.5T240-258v18Zm320-60h160v-60H560v60Zm-157.5-77.5Q420-395 420-420t-17.5-42.5Q385-480 360-480t-42.5 17.5Q300-445 300-420t17.5 42.5Q335-360 360-360t42.5-17.5ZM560-420h160v-60H560v60ZM440-600h80v-200h-80v200Zm40 220Z"/></svg></span>
+              </div>
+              <div class="student-name" id="nombreCarnet" style="position:absolute;left:116px;top:68px;font-size:13px;font-weight:700;color:#003366;font-family:'DM Sans',sans-serif">—</div>
+              <div style="position:absolute;left:116px;top:90px;display:flex;flex-direction:column;gap:1px">
+                <div><span style="font-size:6.5px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:.4px">Registro</span><br><span id="registroCarnet" style="font-size:10px;font-weight:600;color:#003366">—</span></div>
+                <div><span style="font-size:6.5px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:.4px">Emisión</span><br><span id="emisionCarnet" style="font-size:10px;font-weight:600;color:#003366">—</span></div>
+                <div><span style="font-size:6.5px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:.4px">Vencimiento</span><br><span id="vencimientoCarnet" style="font-size:10px;font-weight:600;color:#003366">—</span></div>
+              </div>
+              <div id="carreraCarnet" style="position:absolute;left:116px;top:170px;background:#003366;border-radius:3px;padding:3px 7px;font-size:7.5px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.4px">—</div>
+            </div>
+            <div class="face face-back" style="position:relative">
+              <img src="public/imagenes2.png/carnet_uagrm_reverso.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;pointer-events:none"/>
+              <div style="position:absolute;left:16px;top:55px">
+                <div><span style="font-size:7px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.4px">C.I.</span><br><span id="ciCarnet" style="font-size:11px;font-weight:700;color:#fff">—</span></div>
+                <div style="margin-top:8px"><span style="font-size:7px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.4px">Carrera</span><br><span id="carreraBack" style="font-size:9px;font-weight:700;color:#fff">—</span></div>
+                <div style="margin-top:8px"><span style="font-size:7px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.4px">Facultad</span><br><span id="facultadCarnet" style="font-size:9px;font-weight:700;color:#fff">—</span></div>
+              </div>
+              <div class="back-qr" id="qrBox" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:#fff;padding:5px;border-radius:4px"></div>
+            </div>
+          </div>
+        </div>
+        <p class="hint" onclick="document.getElementById('scene').classList.toggle('flipped')">
+          <svg class="icon-svg" viewBox="0 -960 960 960" style="width:16px;height:16px;vertical-align:-2px"><path d="M480-160q-134 0-227-93t-93-227q0-134 93-227t227-93q69 0 132 28.5T720-690v-110h80v280H520v-80h168q-32-56-87.5-88T480-720q-100 0-170 70t-70 170q0 100 70 170t170 70q77 0 139-44t87-116h84q-28 106-114 173t-196 67Z"/></svg> Toca el carnet para girarlo
+        </p>
+        <div class="actions">
+          <button class="btn btn-red" id="btnDescargar">
+            <svg class="icon-svg" viewBox="0 -960 960 960"><path d="M360-460h40v-80h40q17 0 28.5-11.5T480-580v-40q0-17-11.5-28.5T440-660h-80v200Zm40-120v-40h40v40h-40Zm120 120h80q17 0 28.5-11.5T640-500v-120q0-17-11.5-28.5T600-660h-80v200Zm40-40v-120h40v120h-40Zm120 40h40v-80h40v-40h-40v-40h40v-40h-80v200ZM320-240q-33 0-56.5-23.5T240-320v-480q0-33 23.5-56.5T320-880h480q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H320Zm0-80h480v-480H320v480ZM160-80q-33 0-56.5-23.5T80-160v-560h80v560h560v80H160Zm160-720v480-480Z"/></svg> Descargar PDF
+          </button>
+          <button class="btn btn-blue" id="btnImprimir">
+            <svg class="icon-svg" viewBox="0 -960 960 960"><path d="M640-640v-120H320v120h-80v-200h480v200h-80Zm-480 80h640-640Zm560 100q17 0 28.5-11.5T760-500q0-17-11.5-28.5T720-540q-17 0-28.5 11.5T680-500q0 17 11.5 28.5T720-460Zm-80 260v-160H320v160h320Zm80 80H240v-160H80v-240q0-51 35-85.5t85-34.5h560q51 0 85.5 34.5T880-520v240H720v160Zm80-240v-160q0-17-11.5-28.5T760-560H200q-17 0-28.5 11.5T160-520v160h80v-80h480v80h80Z"/></svg> Imprimir
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── DESCARGAR ── -->
+    <div class="view" id="view-descargar">
+      <div class="center-card">
+        <div class="center-icon red-bg"><svg class="icon-svg" viewBox="0 -960 960 960" style="width:32px;height:32px"><path d="M360-460h40v-80h40q17 0 28.5-11.5T480-580v-40q0-17-11.5-28.5T440-660h-80v200Zm40-120v-40h40v40h-40Zm120 120h80q17 0 28.5-11.5T640-500v-120q0-17-11.5-28.5T600-660h-80v200Zm40-40v-120h40v120h-40Zm120 40h40v-80h40v-40h-40v-40h40v-40h-80v200ZM320-240q-33 0-56.5-23.5T240-320v-480q0-33 23.5-56.5T320-880h480q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H320Zm0-80h480v-480H320v480ZM160-80q-33 0-56.5-23.5T80-160v-560h80v560h560v80H160Zm160-720v480-480Z"/></svg></div>
+        <h2>Carnet en PDF</h2>
+        <p>Haz clic en el botón para descargar tu carnet en formato PDF</p>
+        <button class="btn btn-red" onclick="imprimirCarnet()">
+          <svg class="icon-svg" viewBox="0 -960 960 960" style="width:18px;height:18px"><path d="M360-460h40v-80h40q17 0 28.5-11.5T480-580v-40q0-17-11.5-28.5T440-660h-80v200Zm40-120v-40h40v40h-40Zm120 120h80q17 0 28.5-11.5T640-500v-120q0-17-11.5-28.5T600-660h-80v200Zm40-40v-120h40v120h-40Zm120 40h40v-80h40v-40h-40v-40h40v-40h-80v200ZM320-240q-33 0-56.5-23.5T240-320v-480q0-33 23.5-56.5T320-880h480q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H320Zm0-80h480v-480H320v480ZM160-80q-33 0-56.5-23.5T80-160v-560h80v560h560v80H160Zm160-720v480-480Z"/></svg> Descargar PDF
+        </button>
+      </div>
+    </div>
+
+    <!-- ── IMPRIMIR ── -->
+    <div class="view" id="view-imprimir">
+      <div class="center-card">
+        <div class="center-icon blue-bg"><svg class="icon-svg" viewBox="0 -960 960 960" style="width:32px;height:32px"><path d="M640-640v-120H320v120h-80v-200h480v200h-80Zm-480 80h640-640Zm560 100q17 0 28.5-11.5T760-500q0-17-11.5-28.5T720-540q-17 0-28.5 11.5T680-500q0 17 11.5 28.5T720-460Zm-80 260v-160H320v160h320Zm80 80H240v-160H80v-240q0-51 35-85.5t85-34.5h560q51 0 85.5 34.5T880-520v240H720v160Zm80-240v-160q0-17-11.5-28.5T760-560H200q-17 0-28.5 11.5T160-520v160h80v-80h480v80h80Z"/></svg></div>
+        <h2>Impresión del carnet</h2>
+        <p>Haz clic en el botón para enviar tu carnet a la impresora</p>
+        <button class="btn btn-blue" onclick="imprimirCarnet()">
+          <svg class="icon-svg" viewBox="0 -960 960 960" style="width:18px;height:18px"><path d="M640-640v-120H320v120h-80v-200h480v200h-80Zm-480 80h640-640Zm560 100q17 0 28.5-11.5T760-500q0-17-11.5-28.5T720-540q-17 0-28.5 11.5T680-500q0 17 11.5 28.5T720-460Zm-80 260v-160H320v160h320Zm80 80H240v-160H80v-240q0-51 35-85.5t85-34.5h560q51 0 85.5 34.5T880-520v240H720v160Zm80-240v-160q0-17-11.5-28.5T760-560H200q-17 0-28.5 11.5T160-520v160h80v-80h480v80h80Z"/></svg> Imprimir ahora
+        </button>
+      </div>
+    </div>
+
   </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
-// ── Leer datos del sessionStorage (puestos por index.html tras verificación) ──
+// ── Leer datos del sessionStorage ──
 const stored = sessionStorage.getItem('carnet_data');
 
 if (!stored) {
@@ -364,7 +411,24 @@ function renderCarnet(d) {
     fotoEl.style.background = '#aaa';
   }
 
-  // Datos
+  // Sidebar + topbar
+  const avatarSrc = foto ? (foto.startsWith('data:') ? foto : 'data:image/jpeg;base64,' + foto) : '';
+  const sidebarFoto = document.getElementById('sidebarFoto');
+  const topbarFoto = document.getElementById('topbarFoto');
+  const sidebarPh = document.getElementById('sidebarPlaceholder');
+  const topbarPh = document.getElementById('topbarPlaceholder');
+  if (avatarSrc) {
+    sidebarFoto.src = avatarSrc; sidebarFoto.style.display = ''; if(sidebarPh) sidebarPh.style.display = 'none';
+    topbarFoto.src = avatarSrc; topbarFoto.style.display = ''; if(topbarPh) topbarPh.style.display = 'none';
+  } else {
+    if(sidebarPh) sidebarPh.style.display = 'flex';
+    if(topbarPh) topbarPh.style.display = 'flex';
+  }
+
+  document.getElementById('sidebarNombre').textContent  = d.nombre  || '—';
+  document.getElementById('sidebarCarrera').textContent = d.carrera || '—';
+
+  // Datos carnet
   document.getElementById('nombreCarnet').textContent    = d.nombre || '—';
   const reg = d.codigo || d.registro || '—';
   document.getElementById('registroCarnet').textContent  = reg;
@@ -373,17 +437,17 @@ function renderCarnet(d) {
   document.getElementById('carreraBack').textContent     = d.carrera || '—';
   document.getElementById('facultadCarnet').textContent  = d.facultad || '—';
 
-  // Fechas (emisión = hoy, vencimiento = +1 año)
+  // Fechas
   const hoy = new Date();
   const venc = new Date(hoy); venc.setFullYear(venc.getFullYear() + 1);
   const fmt = dt => dt.toLocaleDateString('es-BO',{day:'2-digit',month:'2-digit',year:'numeric'});
   document.getElementById('emisionCarnet').textContent   = fmt(hoy);
   document.getElementById('vencimientoCarnet').textContent = fmt(venc);
 
-  // QR con el registro
+  // QR
   new QRCode(document.getElementById('qrBox'), {
     text: d.codigo || d.registro || 'UAGRM',
-    width: 60, height: 60,
+    width: 56, height: 56,
     colorDark: '#003366', colorLight: '#ffffff',
     correctLevel: QRCode.CorrectLevel.M
   });
@@ -394,7 +458,6 @@ function renderCarnet(d) {
 }
 
 function imprimirCarnet(pdf) {
-  // Mostrar frente para imprimir
   document.getElementById('scene').classList.remove('flipped');
   setTimeout(() => window.print(), 300);
 }
@@ -404,13 +467,44 @@ function showError(msg) {
   document.getElementById('errorMsg').textContent = msg;
   document.getElementById('errorWrap').classList.remove('hidden');
 }
+
+// ── Navegación ──
+const titles = {
+  inicio:    ['Inicio',          'Sistema de Carnetización Digital'],
+  verCarnet: ['Ver Carnet',      'Vista previa de tu carnet universitario'],
+  descargar: ['Descargar Carnet','Descarga tu carnet en formato PDF'],
+  imprimir:  ['Imprimir Carnet', 'Envía tu carnet a una impresora'],
+};
+
+function showView(id, btn) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('carnetWrap').classList.add('hidden');
+  if (id === 'verCarnet') {
+    document.getElementById('carnetWrap').classList.remove('hidden');
+  } else {
+    document.getElementById('view-' + id).classList.add('active');
+  }
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  const t = titles[id] || ['',''];
+  document.getElementById('topbarTitle').textContent    = t[0];
+  document.getElementById('topbarSubtitle').textContent = t[1];
+  closeSidebar();
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('active');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('active');
+}
+
+function cerrarSesion() {
+  sessionStorage.removeItem('carnet_data');
+  window.location.href = 'index.html';
+}
 </script>
-
-<style media="print">
-  body{background:#fff!important;padding:0!important;}
-  .header,.hint,.actions{display:none!important;}
-  .scene{box-shadow:none!important;}
-</style>
-
 </body>
 </html>
