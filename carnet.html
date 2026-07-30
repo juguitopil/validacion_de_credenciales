@@ -252,11 +252,28 @@ body{font-family:'DM Sans',sans-serif;color:#111827;}
 }
 @media(max-width:480px){
   .scene{width:calc(100vw - 32px);height:auto;aspect-ratio:400/264;max-width:400px;perspective:800px;}
-  .actions{flex-direction:column;width:100%;max-width:260px;}
+  /* Ajustes para el frontal del carnet en pantallas pequeñas */
+  .photo-overlay{left:6%;top:28%;width:30%;height:46%;}
+  .data-overlay{left:40%;top:28%;width:56%;height:46%;}
+  .ov-name{font-size:13px;}
+  .ov-label,.ov-value{font-size:11px;}
+  .qr-overlay{left:30%;top:28%;width:40%;height:44%;}
+
+  .actions{flex-direction:column;width:100%;max-width:320px;}
   .btn{width:100%;justify-content:center;}
-  .center-card{padding:32px 20px;}
+  .center-card{padding:24px 16px;}
   .topbar{padding:0 12px;}
   .topbar-title p{display:none;}
+
+  /* Sidebar compacto y tipografías ajustadas */
+  .sidebar{width:200px;}
+  .sidebar-header img{height:28px;}
+  .user-name{font-size:11px;}
+  .user-carrera{font-size:10px;}
+
+  .cards-grid{grid-template-columns:1fr;}
+  .nav-item{padding:10px 12px;margin:6px 8px;}
+  .topbar-title h1{font-size:18px;}
 }
 @media print{
   .sidebar,.topbar,.hint,.actions,.overlay{display:none!important}
