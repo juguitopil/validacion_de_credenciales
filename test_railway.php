@@ -1,5 +1,5 @@
 <?php
-$ch = curl_init('https://unultimointentoporvaleri-production.up.railway.app/');
+$ch = curl_init('https://unultimointentoporvaleri-production-5064.up.railway.app/');
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_TIMEOUT, 10);
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);

@@ -24,9 +24,11 @@ body{font-family:'DM Sans',sans-serif;color:#111827;}
 }
 .sidebar-header{
   padding:18px 16px;border-bottom:1px solid rgba(255,255,255,.1);
-  display:flex;align-items:center;gap:10px;
+  display:flex;align-items:center;gap:10px;min-height:72px;
+  background:linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
 }
-.sidebar-header img{height:30px;filter:brightness(0) invert(1);}
+.sidebar-header img{height:34px;width:auto;max-width:100%;object-fit:contain;display:block;filter:brightness(0) invert(1);}
+.sidebar-header-fallback{display:none;color:#fff;font-weight:700;font-size:15px;letter-spacing:.6px;}
 .sidebar-brand{color:#fff;font-size:13px;font-weight:600;line-height:1.3;}
 .sidebar-brand span{display:block;color:rgba(255,255,255,.5);font-size:10px;font-weight:400;text-transform:uppercase;letter-spacing:.8px;margin-top:1px;}
 .user-card{
@@ -45,17 +47,17 @@ body{font-family:'DM Sans',sans-serif;color:#111827;}
 .user-name{font-size:12px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .user-carrera{font-size:10px;color:rgba(255,255,255,.55);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .nav{padding:8px 0;flex:1;overflow-y:auto;}
-.nav-section{padding:8px 16px 4px;font-size:10px;font-weight:600;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:1px;}
+.nav-section{padding:8px 16px 4px;font-size:10px;font-weight:600;color:rgba(255,255,255,.75);text-transform:uppercase;letter-spacing:1px;}
 .nav-item{
   display:flex;align-items:center;gap:10px;
-  padding:10px 16px;margin:1px 8px;border-radius:8px;
-  color:rgba(255,255,255,.65);font-size:13px;font-weight:500;
+  padding:12px 16px;margin:1px 8px;border-radius:12px;
+  color:#fff;font-size:13px;font-weight:500;
   cursor:pointer;transition:all .15s;border:none;background:none;
   width:calc(100% - 16px);text-align:left;font-family:'DM Sans',sans-serif;
 }
-.nav-item:hover{background:rgba(255,255,255,.1);color:#fff;}
-.nav-item.active{background:rgba(255,255,255,.15);color:#fff;}
-.sidebar-footer{padding:12px;border-top:1px solid rgba(255,255,255,.1);}
+.nav-item:hover{background:rgba(255,255,255,.12);color:#fff;}
+.nav-item.active{background:rgba(255,255,255,.18);color:#fff;}
+.sidebar-footer{padding:12px;border-top:1px solid rgba(255,255,255,.12);}
 .btn-logout{
   display:flex;align-items:center;gap:8px;
   padding:9px 12px;border-radius:8px;
@@ -65,31 +67,49 @@ body{font-family:'DM Sans',sans-serif;color:#111827;}
 .btn-logout:hover{color:#ff6b6b;background:rgba(255,0,0,.1);}
 
 /* ── MAIN ── */
-.main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh;background:linear-gradient(135deg,#001a33 0%,#003366 50%,#001a33 100%);}
+.main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh;background:#f4f7fb;}
 
 /* ── TOPBAR ── */
 .topbar{
-  height:var(--header-h);background:rgba(255,255,255,.06);backdrop-filter:blur(8px);
-  border-bottom:1px solid rgba(255,255,255,.08);
-  display:flex;align-items:center;gap:16px;
+  height:71.5px;background:#003366;
+  border-bottom:1px solid rgba(15,23,42,.08);
+  display:flex;align-items:center;justify-content:flex-end;gap:12px;
   padding:0 24px;position:sticky;top:0;z-index:50;
+  box-shadow:0 10px 26px rgba(15,23,42,.08);
+  position:relative;
 }
-.hamburger{display:none;background:none;border:none;cursor:pointer;color:rgba(255,255,255,.7);padding:4px;}
-.topbar-title{flex:1;}
-.topbar-title h1{font-size:18px;font-weight:600;color:#fff;}
-.topbar-title p{font-size:12px;color:rgba(255,255,255,.5);margin-top:1px;}
-.topbar-avatar{
-  width:34px;height:34px;border-radius:50%;overflow:hidden;
-  border:2px solid rgba(255,255,255,.25);cursor:pointer;background:#b0b8c4;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
+.hamburger{display:none;background:none;border:none;cursor:pointer;color:#475569;padding:8px;}
+.topbar-actions{display:flex;align-items:center;gap:12px;}
+.topbar-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:10px 16px;border-radius:999px;border:1px solid transparent;
+  font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;
 }
-.topbar-avatar img{width:100%;height:100%;object-fit:cover;}
+.topbar-btn.btn-blue{background:#003366;color:#fff;border-color:transparent;}
+.topbar-btn.btn-blue:hover{background:#002244;}
+.topbar-btn.btn-outline{background:#f8fafc;color:#0f172a;border-color:#cbd5e1;}
+.topbar-btn.btn-outline:hover{background:#e2e8f0;}
 
+.topbar-title{
+  align-self:flex-start; width:auto; max-width:980px;
+  background:transparent; padding:0; border-radius:0; box-shadow:none;
+  margin:0 0 20px 0; text-align:left;
+}
+.topbar-title h1{font-size:24px;font-weight:700;color:#0f172a;letter-spacing:.2px;margin:0;}
+.topbar-title p{font-size:14px;color:#475569;margin:6px 0 0;line-height:1.4;}
+
+/* avatar + menu */
+.topbar-spacer{flex:1}
+.topbar-avatar-btn{width:44px;height:44px;border-radius:50%;overflow:hidden;background:#fff;border:2px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;cursor:pointer;margin-left:8px}
+.topbar-avatar-btn img{width:100%;height:100%;object-fit:cover;display:block}
+.topbar-menu{position:absolute;right:24px;top:calc(100% + 8px);background:#fff;border:1px solid rgba(15,23,42,.06);border-radius:12px;box-shadow:0 12px 30px rgba(2,6,23,.12);width:220px;z-index:120;padding:8px;}
+.topbar-menu.hidden{display:none}
+.menu-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;background:transparent;border:none;width:100%;text-align:left;color:#0f172a;cursor:pointer;font-weight:600}
+.menu-item:hover{background:rgba(2,6,23,.03)}
 
 /* ── CONTENT ── */
 .content{
-  flex:1;padding:32px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  flex:1;padding:32px 32px 48px;
+  display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;
 }
 
 /* ── VIEWS ── */
@@ -135,22 +155,53 @@ body{font-family:'DM Sans',sans-serif;color:#111827;}
 
 /* ── CARNET ── */
 .carnet-center{display:flex;flex-direction:column;align-items:center;gap:20px;width:100%;}
-.scene{width:380px;height:240px;perspective:1000px;cursor:pointer;}
+.scene{width:400px;height:264px;perspective:1300px;cursor:pointer;}
 .card-flip{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.4,0,.2,1);}
 .scene:hover .card-flip,.scene.flipped .card-flip{transform:rotateY(180deg);}
-.face{position:absolute;inset:0;border-radius:14px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.35);}
-.face-front{transform:none;}
+.face{
+  position:absolute;inset:0;border-radius:14px;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5);
+  background-repeat:no-repeat;background-size:100% 100%;background-position:center;
+}
 .face-back{transform:rotateY(180deg);}
-.photo-box{width:78px;height:96px;border-radius:4px;overflow:hidden;border:2px solid var(--gold);background:#ccc;position:relative;}
-.photo-box img{width:100%;height:100%;object-fit:cover;display:block;}
-.photo-box img[src=""]{opacity:0;}
-.photo-box img[src=""] ~ .photo-placeholder{display:flex;}
-.photo-box img:not([src=""]) ~ .photo-placeholder{display:none;}
-.photo-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#b0b8c4;color:#fff;font-size:32px;pointer-events:none;}
-.student-name{font-size:13px;font-weight:700;color:var(--navy);line-height:1.2;}
-.back-qr{position:absolute;right:24px;top:50%;transform:translateY(-50%);background:#fff;padding:6px;border-radius:4px;}
-.back-qr svg,.back-qr canvas{width:56px!important;height:56px!important;display:block;}
-.hint{color:var(--red);font-size:12px;font-weight:500;display:flex;align-items:center;gap:5px;cursor:pointer;}
+
+#faceFront{background-image:url('./public/imagenes2.png/carnet_frontal_uagrm.png');}
+#faceBack{background-image:url('./public/imagenes2.png/carnet_uagrm_reverso.jpg');}
+
+/* ── FRONT OVERLAYS ── */
+.photo-overlay{
+  position:absolute;left:8.5%;top:31%;width:31%;height:49%;
+  border-radius:4px;overflow:hidden;background:#ccc;
+}
+.photo-overlay img{width:100%;height:100%;object-fit:cover;display:block;}
+.photo-overlay img[src=""]{opacity:0;}
+
+.text-cover{
+  position:absolute;left:36%;top:31%;width:49%;height:49%;
+  background:transparent;
+}
+.data-overlay{
+  position:absolute;left:44%;top:30%;width:56%;height:49%;
+  display:flex;flex-direction:column;justify-content:flex-start;gap:3px;
+}
+.ov-name{
+  font-size:14px;font-weight:800;color:0000;line-height:1.22;
+  padding-top:2px;
+}
+.ov-row{display:flex;align-items:baseline;gap:3px;}
+.ov-label{font-size:11.5px;font-weight:600;color:0000;white-space:nowrap;}
+.ov-value{font-size:11.5px;font-weight:800;color:0000;}
+
+/* ── BACK OVERLAY ── */
+.qr-overlay{
+  position:absolute;left:32%;top:30%;width:43%;height:64%;
+  background:#fff;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;padding:4%;
+}
+.qr-overlay img,.qr-overlay canvas{width:100%;height:100%;filter:grayscale(100%)}
+
+.hint{color:var(--red);font-size:12px;font-weight:600;letter-spacing:.3px;background:#fff;padding:5px 12px;border-radius:20px;}
 .actions{display:flex;gap:12px;}
 .btn{
   display:flex;align-items:center;gap:7px;
@@ -158,9 +209,9 @@ body{font-family:'DM Sans',sans-serif;color:#111827;}
   font-weight:600;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all .2s;
 }
 .btn-red{background:var(--red);color:#fff;}
-.btn-red:hover{background:#a01022;}
+.btn-red:hover{background:#a01022;transform:translateY(-1px);}
 .btn-blue{background:var(--navy);color:#fff;}
-.btn-blue:hover{background:var(--navy-dark);}
+.btn-blue:hover{background:#08192f;transform:translateY(-1px);}
 
 
 /* ── CENTER CARD (descargar / imprimir) ── */
@@ -197,14 +248,12 @@ body{font-family:'DM Sans',sans-serif;color:#111827;}
   .hamburger{display:flex;}
   .content{padding:24px 16px;}
   .cards-grid{grid-template-columns:1fr;}
-  .scene{width:min(340px,calc(100vw - 32px));height:215px;}
+  .scene{width:min(360px,calc(100vw - 32px));height:238px;}
 }
 @media(max-width:480px){
-  .scene{width:calc(100vw - 32px);height:auto;aspect-ratio:380/240;max-width:380px;perspective:800px;}
-  .photo-box{width:clamp(52px,20vw,68px);height:clamp(65px,25vw,86px);}
+  .scene{width:calc(100vw - 32px);height:auto;aspect-ratio:400/264;max-width:400px;perspective:800px;}
   .actions{flex-direction:column;width:100%;max-width:260px;}
   .btn{width:100%;justify-content:center;}
-  .back-qr svg,.back-qr canvas{width:44px!important;height:44px!important;}
   .center-card{padding:32px 20px;}
   .topbar{padding:0 12px;}
   .topbar-title p{display:none;}
@@ -226,7 +275,7 @@ body{font-family:'DM Sans',sans-serif;color:#111827;}
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-header">
     <img src="https://www.uagrm.edu.bo/img/logo-88x707-gray.png" onerror="this.style.display='none'" alt="UAGRM"/>
-    <div class="sidebar-brand">UAGRM<span>Carnetización Digital</span></div>
+    <div class="sidebar-brand"><span></span></div>
   </div>
   <div class="user-card">
     <div class="user-avatar">
@@ -240,7 +289,6 @@ body{font-family:'DM Sans',sans-serif;color:#111827;}
     </div>
   </div>
   <nav class="nav">
-    <div class="nav-section">Principal</div>
     <button class="nav-item active" data-view="inicio" onclick="showView('inicio',this)">
       <svg class="icon-svg" viewBox="0 -960 960 960"><path d="M520-600v-240h320v240H520ZM120-440v-400h320v400H120Zm400 320v-400h320v400H520Zm-400 0v-240h320v240H120Zm80-400h160v-240H200v240Zm400 320h160v-240H600v240Zm0-480h160v-80H600v80ZM200-200h160v-80H200v80Zm160-320Zm240-160Zm0 240ZM360-280Z"/></svg> Inicio
     </button>
@@ -265,20 +313,31 @@ body{font-family:'DM Sans',sans-serif;color:#111827;}
 <!-- MAIN -->
 <div class="main">
   <header class="topbar">
-    <button class="hamburger" onclick="toggleSidebar()">
+    <button class="hamburger" onclick="toggleSidebar()" aria-label="Abrir menú">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
     </button>
-    <div class="topbar-title">
-      <h1 id="topbarTitle">Inicio</h1>
-      <p id="topbarSubtitle">Sistema de Carnetización Digital</p>
+    <div class="topbar-spacer"></div>
+    <div class="topbar-avatar-btn" id="topbarAvatarBtn" title="Perfil" onclick="toggleTopbarMenu(event)">
+      <img id="topbarAvatarImg" src="" alt="Avatar" />
+      <svg class="icon-svg" id="topbarAvatarPlaceholder" viewBox="0 -960 960 960" style="display:none;width:18px;height:18px"><path d="M160-80q-33 0-56.5-23.5T80-160v-440q0-33 23.5-56.5T160-680h200v-120q0-33 23.5-56.5T440-880h80q33 0 56.5 23.5T600-800v120h200q33 0 56.5 23.5T880-600v440q0 33-23.5 56.5T800-80H160Zm0-80h640v-440H600q0 33-23.5 56.5T520-520h-80q-33 0-56.5-23.5T360-600H160v440Zm80-80h240v-18q0-17-9.5-31.5T444-312q-20-9-40.5-13.5T360-330q-23 0-43.5 4.5T276-312q-17 8-26.5 22.5T240-258v18Zm320-60h160v-60H560v60Zm-157.5-77.5Q420-395 420-420t-17.5-42.5Q385-480 360-480t-42.5 17.5Q300-445 300-420t17.5 42.5Q335-360 360-360t42.5-17.5ZM560-420h160v-60H560v60ZM440-600h80v-200h-80v200Zm40 220Z"/></svg>
     </div>
-    <div class="topbar-avatar">
-      <img id="topbarFoto" src="" alt=""/>
-      <svg class="icon-svg" id="topbarPlaceholder" viewBox="0 -960 960 960" style="display:none;width:18px;height:18px"><path d="M160-80q-33 0-56.5-23.5T80-160v-440q0-33 23.5-56.5T160-680h200v-120q0-33 23.5-56.5T440-880h80q33 0 56.5 23.5T600-800v120h200q33 0 56.5 23.5T880-600v440q0 33-23.5 56.5T800-80H160Zm0-80h640v-440H600q0 33-23.5 56.5T520-520h-80q-33 0-56.5-23.5T360-600H160v440Zm80-80h240v-18q0-17-9.5-31.5T444-312q-20-9-40.5-13.5T360-330q-23 0-43.5 4.5T276-312q-17 8-26.5 22.5T240-258v18Zm320-60h160v-60H560v60Zm-157.5-77.5Q420-395 420-420t-17.5-42.5Q385-480 360-480t-42.5 17.5Q300-445 300-420t17.5 42.5Q335-360 360-360t42.5-17.5ZM560-420h160v-60H560v60ZM440-600h80v-200h-80v200Zm40 220Z"/></svg>
+    <div class="topbar-menu hidden" id="topbarMenu">
+      <button class="menu-item" onclick="location.reload()">
+        <svg class="icon-svg" viewBox="0 -960 960 960"><path d="M480-160q-134 0-227-93t-93-227q0-134 93-227t227-93q69 0 132 28.5T720-690v-110h80v280H520v-80h168q-32 56-87.5 88T480-720q-100 0-170 70t-70 170q0 100 70 170t170 70q77 0 139-44t87-116h84q-28 106-114 173t-196 67Z"/></svg>
+        Actualizar datos
+      </button>
+      <button class="menu-item" onclick="cerrarSesion()">
+        <svg class="icon-svg" viewBox="0 -960 960 960" fill="#ff6b6b"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h280v80H200Zm440-160-55-58 102-102H360v-80h327L585-622l55-58 200 200-200 200Z"/></svg>
+        Cerrar sesión
+      </button>
     </div>
   </header>
 
   <div class="content">
+    <div class="topbar-title">
+      <h1 id="topbarTitle">Inicio</h1>
+      <p id="topbarSubtitle">Sistema de Carnetización Digital</p>
+    </div>
 
     <!-- LOADING -->
     <div class="loading-wrap" id="loadingWrap">
@@ -319,34 +378,24 @@ body{font-family:'DM Sans',sans-serif;color:#111827;}
       <div class="carnet-center">
         <div class="scene" id="scene" onclick="this.classList.toggle('flipped')">
           <div class="card-flip">
-            <div class="face face-front" style="position:relative">
-              <img src="public/imagenes2.png/carnet_frontal_uagrm.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;pointer-events:none"/>
-              <div class="photo-box" style="position:absolute;left:26px;top:62px;width:78px;height:96px;border:2px solid #FFD700;border-radius:3px;overflow:hidden;background:#ccc">
-                <img id="fotoCarnet" src="" alt="Foto" style="width:100%;height:100%;object-fit:cover;display:block"/>
-                <span class="photo-placeholder"><svg viewBox="0 -960 960 960" style="width:28px;height:28px;display:block;margin:auto"><path fill="#fff" d="M160-80q-33 0-56.5-23.5T80-160v-440q0-33 23.5-56.5T160-680h200v-120q0-33 23.5-56.5T440-880h80q33 0 56.5 23.5T600-800v120h200q33 0 56.5 23.5T880-600v440q0 33-23.5 56.5T800-80H160Zm0-80h640v-440H600q0 33-23.5 56.5T520-520h-80q-33 0-56.5-23.5T360-600H160v440Zm80-80h240v-18q0-17-9.5-31.5T444-312q-20-9-40.5-13.5T360-330q-23 0-43.5 4.5T276-312q-17 8-26.5 22.5T240-258v18Zm320-60h160v-60H560v60Zm-157.5-77.5Q420-395 420-420t-17.5-42.5Q385-480 360-480t-42.5 17.5Q300-445 300-420t17.5 42.5Q335-360 360-360t42.5-17.5ZM560-420h160v-60H560v60ZM440-600h80v-200h-80v200Zm40 220Z"/></svg></span>
+            <div class="face" id="faceFront">
+              <div class="photo-overlay"><img id="fotoCarnet" src="" alt="Foto"/></div>
+              <div class="text-cover"></div>
+              <div class="data-overlay">
+                <div class="ov-name" id="nombreCarnet">—</div>
+                <div class="ov-row"><span class="ov-label">Registro:</span><span class="ov-value" id="registroCarnet">—</span></div>
+                <div class="ov-row"><span class="ov-label">Emisión:</span><span class="ov-value" id="emisionCarnet">—</span></div>
+                <div class="ov-row"><span class="ov-label">Vencimiento:</span><span class="ov-value" id="vencimientoCarnet">—</span></div>
               </div>
-              <div class="student-name" id="nombreCarnet" style="position:absolute;left:116px;top:68px;font-size:13px;font-weight:700;color:#003366;font-family:'DM Sans',sans-serif">—</div>
-              <div style="position:absolute;left:116px;top:90px;display:flex;flex-direction:column;gap:1px">
-                <div><span style="font-size:6.5px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:.4px">Registro</span><br><span id="registroCarnet" style="font-size:10px;font-weight:600;color:#003366">—</span></div>
-                <div><span style="font-size:6.5px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:.4px">Emisión</span><br><span id="emisionCarnet" style="font-size:10px;font-weight:600;color:#003366">—</span></div>
-                <div><span style="font-size:6.5px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:.4px">Vencimiento</span><br><span id="vencimientoCarnet" style="font-size:10px;font-weight:600;color:#003366">—</span></div>
-              </div>
-              <div id="carreraCarnet" style="position:absolute;left:116px;top:170px;background:#003366;border-radius:3px;padding:3px 7px;font-size:7.5px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.4px">—</div>
             </div>
-            <div class="face face-back" style="position:relative">
-              <img src="public/imagenes2.png/carnet_uagrm_reverso.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;pointer-events:none"/>
-              <div style="position:absolute;left:16px;top:55px">
-                <div><span style="font-size:7px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.4px">C.I.</span><br><span id="ciCarnet" style="font-size:11px;font-weight:700;color:#fff">—</span></div>
-                <div style="margin-top:8px"><span style="font-size:7px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.4px">Carrera</span><br><span id="carreraBack" style="font-size:9px;font-weight:700;color:#fff">—</span></div>
-                <div style="margin-top:8px"><span style="font-size:7px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.4px">Facultad</span><br><span id="facultadCarnet" style="font-size:9px;font-weight:700;color:#fff">—</span></div>
-              </div>
-              <div class="back-qr" id="qrBox" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:#fff;padding:5px;border-radius:4px"></div>
+            <div class="face face-back" id="faceBack">
+              <div class="qr-overlay" id="qrBox"></div>
             </div>
           </div>
         </div>
-        <p class="hint" onclick="document.getElementById('scene').classList.toggle('flipped')">
-          <svg class="icon-svg" viewBox="0 -960 960 960" style="width:16px;height:16px;vertical-align:-2px"><path d="M480-160q-134 0-227-93t-93-227q0-134 93-227t227-93q69 0 132 28.5T720-690v-110h80v280H520v-80h168q-32-56-87.5-88T480-720q-100 0-170 70t-70 170q0 100 70 170t170 70q77 0 139-44t87-116h84q-28 106-114 173t-196 67Z"/></svg> Toca el carnet para girarlo
-        </p>
+          <p class="hint" onclick="document.getElementById('scene').classList.toggle('flipped')">
+            Toca el carnet para girarlo
+          </p>
         <div class="actions">
           <button class="btn btn-red" id="btnDescargar">
             <svg class="icon-svg" viewBox="0 -960 960 960"><path d="M360-460h40v-80h40q17 0 28.5-11.5T480-580v-40q0-17-11.5-28.5T440-660h-80v200Zm40-120v-40h40v40h-40Zm120 120h80q17 0 28.5-11.5T640-500v-120q0-17-11.5-28.5T600-660h-80v200Zm40-40v-120h40v120h-40Zm120 40h40v-80h40v-40h-40v-40h40v-40h-80v200ZM320-240q-33 0-56.5-23.5T240-320v-480q0-33 23.5-56.5T320-880h480q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H320Zm0-80h480v-480H320v480ZM160-80q-33 0-56.5-23.5T80-160v-560h80v560h560v80H160Zm160-720v480-480Z"/></svg> Descargar PDF
@@ -414,28 +463,27 @@ function renderCarnet(d) {
   // Sidebar + topbar
   const avatarSrc = foto ? (foto.startsWith('data:') ? foto : 'data:image/jpeg;base64,' + foto) : '';
   const sidebarFoto = document.getElementById('sidebarFoto');
-  const topbarFoto = document.getElementById('topbarFoto');
+  const topbarAvatarImg = document.getElementById('topbarAvatarImg');
   const sidebarPh = document.getElementById('sidebarPlaceholder');
-  const topbarPh = document.getElementById('topbarPlaceholder');
+  const topbarPh = document.getElementById('topbarAvatarPlaceholder');
   if (avatarSrc) {
-    sidebarFoto.src = avatarSrc; sidebarFoto.style.display = ''; if(sidebarPh) sidebarPh.style.display = 'none';
-    topbarFoto.src = avatarSrc; topbarFoto.style.display = ''; if(topbarPh) topbarPh.style.display = 'none';
+    if (sidebarFoto) { sidebarFoto.src = avatarSrc; sidebarFoto.style.display = ''; }
+    if (sidebarPh) sidebarPh.style.display = 'none';
+    if (topbarAvatarImg) { topbarAvatarImg.src = avatarSrc; topbarAvatarImg.style.display = ''; }
+    if (topbarPh) topbarPh.style.display = 'none';
   } else {
-    if(sidebarPh) sidebarPh.style.display = 'flex';
-    if(topbarPh) topbarPh.style.display = 'flex';
+    if (sidebarPh) sidebarPh.style.display = 'flex';
+    if (topbarPh) topbarPh.style.display = 'flex';
+    if (topbarAvatarImg) topbarAvatarImg.style.display = 'none';
   }
 
   document.getElementById('sidebarNombre').textContent  = d.nombre  || '—';
   document.getElementById('sidebarCarrera').textContent = d.carrera || '—';
 
-  // Datos carnet
+  // Datos carnet — solo nombre, registro, emisión y vencimiento van en el frente
   document.getElementById('nombreCarnet').textContent    = d.nombre || '—';
   const reg = d.codigo || d.registro || '—';
   document.getElementById('registroCarnet').textContent  = reg;
-  document.getElementById('carreraCarnet').textContent   = d.carrera || '—';
-  document.getElementById('ciCarnet').textContent        = d.ci || '—';
-  document.getElementById('carreraBack').textContent     = d.carrera || '—';
-  document.getElementById('facultadCarnet').textContent  = d.facultad || '—';
 
   // Fechas
   const hoy = new Date();
@@ -447,8 +495,8 @@ function renderCarnet(d) {
   // QR
   new QRCode(document.getElementById('qrBox'), {
     text: d.codigo || d.registro || 'UAGRM',
-    width: 56, height: 56,
-    colorDark: '#003366', colorLight: '#ffffff',
+    width: 200, height: 200,
+    colorDark: '#0B2447', colorLight: '#ffffff',
     correctLevel: QRCode.CorrectLevel.M
   });
 
@@ -505,6 +553,130 @@ function cerrarSesion() {
   sessionStorage.removeItem('carnet_data');
   window.location.href = 'index.html';
 }
+
+// Manejo de carga/error de imágenes para mostrar placeholders en la vista
+function setupImagePlaceholders() {
+  const foto = document.getElementById('fotoCarnet');
+  const sidebarFoto = document.getElementById('sidebarFoto');
+  const topbarFoto = document.getElementById('topbarAvatarImg');
+  const sidebarPh = document.getElementById('sidebarPlaceholder');
+  const topbarPh = document.getElementById('topbarAvatarPlaceholder');
+
+  function handleError(img, ph) {
+    try { img.style.display = 'none'; } catch(e){}
+    if (ph) ph.style.display = 'flex';
+  }
+  function handleLoad(img, ph) {
+    if (!img || !img.src) return;
+    if (ph) ph.style.display = 'none';
+    img.style.display = '';
+  }
+
+  if (foto) {
+    foto.addEventListener('error', () => {
+      const ph = foto.parentElement.querySelector('.photo-placeholder');
+      handleError(foto, ph);
+    });
+    foto.addEventListener('load', () => {
+      const ph = foto.parentElement.querySelector('.photo-placeholder');
+      handleLoad(foto, ph);
+    });
+  }
+  if (sidebarFoto) {
+    sidebarFoto.addEventListener('error', () => handleError(sidebarFoto, sidebarPh));
+    sidebarFoto.addEventListener('load',  () => handleLoad(sidebarFoto, sidebarPh));
+  }
+  if (topbarFoto) {
+    topbarFoto.addEventListener('error', () => handleError(topbarFoto, topbarPh));
+    topbarFoto.addEventListener('load',  () => handleLoad(topbarFoto, topbarPh));
+  }
+}
+// Ejecutar una vez para configurar manejadores
+setupImagePlaceholders();
+
+// Toggle menú del avatar en topbar
+function toggleTopbarMenu(e) {
+  try { e.stopPropagation(); } catch (e) {}
+  const m = document.getElementById('topbarMenu');
+  if (!m) return;
+  m.classList.toggle('hidden');
+}
+
+// Cerrar menú al click fuera
+document.addEventListener('click', (ev) => {
+  const m = document.getElementById('topbarMenu');
+  const btn = document.getElementById('topbarAvatarBtn');
+  if (!m || !btn) return;
+  if (!m.classList.contains('hidden')) {
+    if (!btn.contains(ev.target) && !m.contains(ev.target)) m.classList.add('hidden');
+  }
+});
+
+// Panel de depuración: permite subir imágenes locales para probar la vista
+function addDebugPanel() {
+  if (!location.search.includes('debug=1')) return;
+  const panel = document.createElement('div');
+  panel.style.position = 'fixed';
+  panel.style.right = '16px';
+  panel.style.bottom = '16px';
+  panel.style.background = 'rgba(0,0,0,.7)';
+  panel.style.color = '#fff';
+  panel.style.padding = '12px';
+  panel.style.borderRadius = '8px';
+  panel.style.zIndex = 9999;
+  panel.innerHTML = `
+    <div style="font-size:13px;font-weight:700;margin-bottom:8px">Debug: subir imagenes</div>
+    <div style="font-size:12px;margin-bottom:6px">Foto carnet</div>
+    <input id="dbgFoto" type="file" accept="image/*" style="width:220px;margin-bottom:8px" />
+    <div style="font-size:12px;margin-bottom:6px">Avatar (sidebar/topbar)</div>
+    <input id="dbgAvatar" type="file" accept="image/*" style="width:220px;margin-bottom:8px" />
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button id="dbgApply" style="background:#1f2937;color:#fff;border:none;padding:6px 10px;border-radius:6px;cursor:pointer">Aplicar</button>
+      <button id="dbgClear" style="background:#dc2626;color:#fff;border:none;padding:6px 10px;border-radius:6px;cursor:pointer">Limpiar</button>
+    </div>
+  `;
+  document.body.appendChild(panel);
+
+  const fInput = document.getElementById('dbgFoto');
+  const aInput = document.getElementById('dbgAvatar');
+  document.getElementById('dbgApply').addEventListener('click', () => {
+    const readerFoto = fInput.files[0] ? new FileReader() : null;
+    const readerAvatar = aInput.files[0] ? new FileReader() : null;
+    const payload = {
+      codigo: 'TEST123', nombre: 'Usuario Test', carrera: 'Ingenieria', facultad: 'Facultad', ci: '0000000'
+    };
+    let pending = 0;
+    function maybeFinish() {
+      if (pending === 0) {
+        sessionStorage.setItem('carnet_data', JSON.stringify(payload));
+        location.reload();
+      }
+    }
+    if (readerFoto) {
+      pending++;
+      readerFoto.onload = (e) => { payload.foto_base64 = e.target.result; pending--; maybeFinish(); };
+      readerFoto.readAsDataURL(fInput.files[0]);
+    }
+    if (readerAvatar) {
+      pending++;
+      readerAvatar.onload = (e) => { payload.foto_base64 = payload.foto_base64 || ''; payload.avatar = e.target.result; pending--; maybeFinish(); };
+      readerAvatar.readAsDataURL(aInput.files[0]);
+    }
+    if (!readerFoto && !readerAvatar) {
+      // nada seleccionado: limpiar y recargar
+      sessionStorage.setItem('carnet_data', JSON.stringify(payload));
+      location.reload();
+    }
+  });
+
+  document.getElementById('dbgClear').addEventListener('click', () => {
+    sessionStorage.removeItem('carnet_data');
+    alert('SessionStorage limpiado. Volviendo a index.');
+    window.location.href = 'index.html';
+  });
+}
+
+addDebugPanel();
 </script>
 </body>
 </html>
