@@ -10,10 +10,16 @@
 :root{
   --navy:#003366;--navy-dark:#002244;--red:#c0132b;--gold:#FFD700;
   --white:#fff;--gray:#f0f2f7;--gray200:#e4e7ec;--gray400:#9aa3b0;--gray600:#4b5563;
-  --sidebar-w:220px;--header-h:60px;
+  --sidebar-w:clamp(160px,18vw,260px);--header-h:clamp(56px,6vw,72px);
 }
 html,body{height:100%}
 body{font-family:'DM Sans',sans-serif;color:#111827;}
+
+/* Global responsive base */
+html{font-size:clamp(14px,1.6vw,16px)}
+img, picture, video, canvas {max-width:100%;height:auto;display:block}
+svg{max-width:100%;height:auto}
+
 
 /* ── SIDEBAR ── */
 .sidebar{
@@ -143,7 +149,7 @@ body{font-family:'DM Sans',sans-serif;color:#111827;}
 }
 
 /* ── INICIO ── */
-.cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;width:100%;max-width:700px;}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;width:100%;max-width:1000px;}
 .action-card{
   background:rgba(255,255,255,.95);border-radius:12px;border:1px solid rgba(255,255,255,.2);
   padding:20px;cursor:pointer;transition:all .2s;text-align:center;
@@ -155,7 +161,7 @@ body{font-family:'DM Sans',sans-serif;color:#111827;}
 
 /* ── CARNET ── */
 .carnet-center{display:flex;flex-direction:column;align-items:center;gap:20px;width:100%;}
-.scene{width:400px;height:264px;perspective:1300px;cursor:pointer;}
+.scene{width:min(400px,90vw);aspect-ratio:400/264;height:auto;perspective:1300px;cursor:pointer;}
 .card-flip{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.4,0,.2,1);}
 .scene:hover .card-flip,.scene.flipped .card-flip{transform:rotateY(180deg);}
 .face{
@@ -172,10 +178,14 @@ body{font-family:'DM Sans',sans-serif;color:#111827;}
 /* ── FRONT OVERLAYS ── */
 .photo-overlay{
   position:absolute;left:8.5%;top:31%;width:31%;height:49%;
-  border-radius:4px;overflow:hidden;background:#ccc;display:flex;align-items:center;justify-content:center;
+  border-radius:8px;overflow:hidden;background:transparent;display:flex;align-items:center;justify-content:center;
+  box-sizing:border-box; /* asegurar padding dentro del contenedor */
+  /* marco interior blanco para que la foto no toque los bordes */
+  box-shadow: inset 0 0 0 6px #fff; 
 }
-.photo-overlay img{width:100%;height:100%;object-fit:cover;display:block;}
-.photo-overlay img{object-position:center center}
+.photo-overlay img{
+  width:100%;height:100%;object-fit:cover;display:block;border-radius:4px;object-position:center center;transform:none;max-width:none;
+}
 .photo-overlay img[src=""]{opacity:0;}
 
 .text-cover{
