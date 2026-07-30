@@ -172,9 +172,10 @@ body{font-family:'DM Sans',sans-serif;color:#111827;}
 /* ── FRONT OVERLAYS ── */
 .photo-overlay{
   position:absolute;left:8.5%;top:31%;width:31%;height:49%;
-  border-radius:4px;overflow:hidden;background:#ccc;
+  border-radius:4px;overflow:hidden;background:#ccc;display:flex;align-items:center;justify-content:center;
 }
 .photo-overlay img{width:100%;height:100%;object-fit:cover;display:block;}
+.photo-overlay img{object-position:center center}
 .photo-overlay img[src=""]{opacity:0;}
 
 .text-cover{
@@ -279,8 +280,18 @@ body{font-family:'DM Sans',sans-serif;color:#111827;}
   .sidebar,.topbar,.hint,.actions,.overlay{display:none!important}
   .main{margin-left:0}
   .content{padding:0}
-  .scene{box-shadow:none!important}
-  .face{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .scene{box-shadow:none!important;perspective:0!important;height:auto!important}
+  /* Forzar mostrar solo el frente y desactivar rotaciones 3D al imprimir */
+  .card-flip{transform:none !important;transition:none !important}
+  .face{position:static !important;transform:none !important;backface-visibility:visible !important;box-shadow:none !important}
+  .face-back{display:none !important}
+  /* Ajustes de overlays para impresión: asegurar que la foto y QR queden bien
+     y centrados en una sola página */
+  .photo-overlay{left:6% !important;top:20% !important;width:32% !important;height:46% !important}
+  .data-overlay{left:40% !important;top:20% !important;width:56% !important;height:46% !important}
+  .qr-overlay{left:30% !important;top:20% !important;width:40% !important;height:44% !important}
+  .photo-overlay img{object-fit:cover !important;object-position:center center !important}
+  .qr-overlay img,.qr-overlay canvas{filter:none !important}
 }
 </style>
 </head>
