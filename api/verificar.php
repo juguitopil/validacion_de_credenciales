@@ -1,14 +1,14 @@
 <?php
 // verificar.php
-// Llama al robot Puppeteer en Railway.
-// Railway ejecuta Chrome real y verifica las credenciales en el portal UAGRM.
+// Llama al robot Puppeteer en Render.
+// Render ejecuta Chrome real y verifica las credenciales en el portal UAGRM.
 
-define('RAILWAY_URL', 'https://unultimointentoporvaleri-production-5064.up.railway.app');
+define('RENDER_URL', 'https://un-ultimo-intento-por-valeri.onrender.com');
 
 function verificarCredencialesUAGRM(string $registro, string $password, array &$debug = []): bool {
 
-    $endpoint = RAILWAY_URL . '/api/verificar';
-    $debug['railway_endpoint'] = $endpoint;
+    $endpoint = RENDER_URL . '/api/verificar';
+    $debug['render_endpoint'] = $endpoint;
 
     $payload = json_encode([
         'username' => $registro,
@@ -34,20 +34,20 @@ function verificarCredencialesUAGRM(string $registro, string $password, array &$
     $curlError = curl_error($ch);
     curl_close($ch);
 
-    $debug['railway_http_code']  = $httpCode;
-    $debug['railway_curl_error'] = $curlError;
-    $debug['railway_response']   = $response;
+    $debug['render_http_code']  = $httpCode;
+    $debug['render_curl_error'] = $curlError;
+    $debug['render_response']   = $response;
 
     if ($curlError || $httpCode === 0) {
-        $debug['resultado'] = 'ERROR: no se pudo conectar a Railway: ' . $curlError;
+        $debug['resultado'] = 'ERROR: no se pudo conectar a Render: ' . $curlError;
         return false;
     }
 
     $data = json_decode($response, true);
-    $debug['railway_data'] = $data;
+    $debug['render_data'] = $data;
 
     if (!is_array($data)) {
-        $debug['resultado'] = 'ERROR: respuesta invalida de Railway';
+        $debug['resultado'] = 'ERROR: respuesta invalida de Render';
         return false;
     }
 

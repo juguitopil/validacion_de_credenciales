@@ -1,4 +1,4 @@
-const RAILWAY_URL = 'https://unultimointentoporvaleri-production-5064.up.railway.app';
+const RENDER_URL = 'https://un-ultimo-intento-por-valeri.onrender.com';
 
 // Toggle password
 const togglePass = document.getElementById('togglePass');
@@ -38,8 +38,8 @@ form.addEventListener('submit', async (e) => {
   setEstado('Verificando credenciales en el portal UAGRM...');
 
   try {
-    // PASO 1: Verificar via Railway
-    const resp = await fetch(RAILWAY_URL + '/api/verificar', {
+    // PASO 1: Verificar via RENDER
+    const resp = await fetch(RENDER_URL + '/api/verificar', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username: registro, password })

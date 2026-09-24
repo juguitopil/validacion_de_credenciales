@@ -33,17 +33,17 @@ Si funciona, el sistema completo funcionara.</p>
 <div id="resultado">Esperando prueba...</div>
 
 <script>
-const RAILWAY_URL = 'https://unultimointentoporvaleri-production-5064.up.railway.app';
+const RENDER_URL = 'https://un-ultimo-intento-por-valeri.onrender.com';
 
 async function probarHealth() {
   const div = document.getElementById('resultado');
   div.className = '';
-  div.textContent = 'Conectando a Railway...';
+  div.textContent = 'Conectando a Render...';
   try {
-    const r = await fetch(RAILWAY_URL + '/');
+    const r = await fetch(RENDER_URL + '/');
     const d = await r.json();
     div.className = 'ok';
-    div.textContent = 'Railway OK: ' + JSON.stringify(d, null, 2);
+    div.textContent = 'RENDER OK: ' + JSON.stringify(d, null, 2);
   } catch(e) {
     div.className = 'error';
     div.textContent = 'Error: ' + e.message;
@@ -61,11 +61,11 @@ async function probar() {
   }
 
   div.className = '';
-  div.textContent = 'Enviando a Railway... (puede tardar 15-20 segundos, Chrome esta abriendo el portal UAGRM)';
+  div.textContent = 'Enviando a Render... (puede tardar 15-20 segundos, Chrome esta abriendo el portal UAGRM)';
 
   const inicio = Date.now();
   try {
-    const resp = await fetch(RAILWAY_URL + '/api/verificar', {
+    const resp = await fetch(RENDER_URL + '/api/verificar', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username: registro, password: password })
@@ -83,7 +83,7 @@ async function probar() {
     }
   } catch(e) {
     div.className = 'error';
-    div.textContent = 'Error de conexion: ' + e.message + '\n\nVerifica que Railway este activo.';
+    div.textContent = 'Error de conexion: ' + e.message + '\n\nVerifica que Render este activo.';
   }
 }
 </script>
